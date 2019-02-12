@@ -2,7 +2,7 @@
 
   (general
     (thickness 1.6)
-    (drawings 11)
+    (drawings 13)
     (tracks 228)
     (zones 0)
     (modules 36)
@@ -20,8 +20,8 @@
   )
 
   (layers
-    (0 F.Cu signal)
-    (31 B.Cu signal)
+    (0 F.Cu signal hide)
+    (31 B.Cu signal hide)
     (32 B.Adhes user)
     (33 F.Adhes user)
     (34 B.Paste user)
@@ -43,7 +43,7 @@
   )
 
   (setup
-    (last_trace_width 0.2)
+    (last_trace_width 0.25)
     (user_trace_width 0.2)
     (user_trace_width 0.3)
     (user_trace_width 0.35)
@@ -1032,7 +1032,7 @@
   )
 
   (module kicad-libraries:Logo_31x31 (layer F.Cu) (tedit 0) (tstamp 5C639AB4)
-    (at 165.8 101.2)
+    (at 146.4 73.9)
     (fp_text reference G*** (at 0 0) (layer F.SilkS) hide
       (effects (font (size 1.524 1.524) (thickness 0.3)))
     )
@@ -1479,10 +1479,16 @@
       (xy -0.55372 -1.41224) (xy -0.55372 -1.67132)) (layer B.SilkS) (width 0.00254))
   )
 
-  (gr_text "Energy Monitor 1.0" (at 165.8 66.4) (layer F.SilkS)
+  (gr_text "AC Current\nmax 1V\n" (at 167.4 71.8) (layer F.SilkS)
     (effects (font (size 0.8 0.8) (thickness 0.15)))
   )
-  (gr_text tinkerforge.com (at 165.8 103.6) (layer F.SilkS)
+  (gr_text "AC Voltage max 12VAC" (at 172.3 88.6) (layer F.SilkS)
+    (effects (font (size 0.8 0.8) (thickness 0.15)))
+  )
+  (gr_text "Energy Monitor 1.0" (at 146.6 93) (layer F.SilkS)
+    (effects (font (size 0.8 0.8) (thickness 0.15)))
+  )
+  (gr_text tinkerforge.com (at 146.4 76.6) (layer F.SilkS)
     (effects (font (size 0.8 0.8) (thickness 0.15)))
   )
   (gr_text Status (at 154.1 103.6) (layer F.SilkS)
