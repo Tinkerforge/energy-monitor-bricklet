@@ -25,11 +25,16 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define ENERGY_CALIBRATION_PAGE 1
 #define ENERGY_CALIBRATION_MAGIC 0x12345679
 #define ENERGY_CALIBRATION_MAGIC_POS 0
-#define ENERGY_CALIBRATION_A_POS 1
-#define ENERGY_CALIBRATION_V_POS 2
+
+#define ENERGY_OFFSET_CALIBRATION_PAGE 1
+#define ENERGY_OFFSET_CALIBRATION_A_POS 1
+#define ENERGY_OFFSET_CALIBRATION_V_POS 2
+
+#define ENERGY_RATIO_CALIBRATION_PAGE 2
+#define ENERGY_RATIO_CALIBRATION_A_POS 1
+#define ENERGY_RATIO_CALIBRATION_V_POS 2
 
 #define ENERGY_SAMPLES_NUM 1024
 #define ENERGY_API_SAMPLES_NUM (1024 - 256)
@@ -43,11 +48,18 @@ typedef struct {
     int16_t waveform_a_api[ENERGY_API_SAMPLES_NUM];
     int16_t waveform_v_api[ENERGY_API_SAMPLES_NUM];
 
-    uint16_t a_mid;
-    uint16_t v_mid;
-    int64_t last_v_adc;
+    int32_t last_v_adc;
+    int32_t last_a_adc;
 
-    bool calibrate;
+    bool last_voltage_transformer_connected;
+    bool last_current_transformer_connected;
+
+    bool calibrate_offset_new;
+    uint16_t offset_voltage;
+    uint16_t offset_current;
+    bool calibrate_ratio_new;
+    uint16_t ratio_voltage;
+    uint16_t ratio_current;
 
     uint16_t waveform_last_index;
     uint16_t waveform_api_index;
@@ -72,7 +84,7 @@ typedef struct {
 	int32_t apparent_power; // VA
 	int32_t reactive_power; // VAR
 	uint16_t power_factor;
-    uint16_t frequency;            // Hz
+    uint16_t frequency;     // Hz
 } Energy;
 
 extern Energy energy;

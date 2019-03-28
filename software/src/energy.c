@@ -34,20 +34,7 @@
 #include "xmc_wdt.h"
 #include "xmc_math.h"
 
-#if 0
-#define XMC_MATH_SIGNED_DIVISION                      ((uint32_t) 0 << MATH_DIVCON_USIGN_Pos)
-/* Unsigned division is selected */
-#define XMC_MATH_UNSIGNED_DIVISION                    ((uint32_t) 1 << MATH_DIVCON_USIGN_Pos)
-		MATH->DIVCON  = XMC_MATH_SIGNED_DIVISION;
-  		MATH->DVD     = mains_ma;
-  		MATH->DVS     = 100;
-  		energy.waveform_a[index] =  MATH->QUOT;
-
-		MATH->DIVCON  = XMC_MATH_SIGNED_DIVISION;
-  		MATH->DVD     = mains_mv;
-  		MATH->DVS     = 100;
-  		energy.waveform_v[index] =  MATH->QUOT;
-#endif
+#define ENERGY_CROSSINGS_PER_CALCULATON 10
 
 #define energy_adc_irq_handler IRQ_Hdlr_15
 
@@ -73,45 +60,44 @@ void __attribute__((optimize("-O3"))) __attribute__ ((section (".ram_code"))) en
 	*energy_samples_end_cur = ((uint32_t)a) | (((uint32_t)v) << 16);
 }
 
-void energy_write_calibration(uint16_t a, uint16_t v) {
+void energy_write_offset_calibration(uint16_t a, uint16_t v) {
 	uint32_t page[EEPROM_PAGE_SIZE/sizeof(uint32_t)];
-	page[ENERGY_CALIBRATION_MAGIC_POS] = ENERGY_CALIBRATION_MAGIC;
-	page[ENERGY_CALIBRATION_A_POS]     = a;
-	page[ENERGY_CALIBRATION_V_POS]     = v;
+	page[ENERGY_CALIBRATION_MAGIC_POS]    = ENERGY_CALIBRATION_MAGIC;
+	page[ENERGY_OFFSET_CALIBRATION_A_POS] = a;
+	page[ENERGY_OFFSET_CALIBRATION_V_POS] = v;
 
-	if(!bootloader_write_eeprom_page(ENERGY_CALIBRATION_PAGE, page)) {
+	if(!bootloader_write_eeprom_page(ENERGY_OFFSET_CALIBRATION_PAGE, page)) {
 		// TODO: Error handling?
 	}
 	
-	logd("Write calibration values: a %d, v %d\n\r", energy.a_mid, energy.v_mid);
+	logd("Write offset calibration values: a %d, v %d\n\r", a, v);
 }
 
 
-void energy_read_calibration(void) {
+void energy_read_offset_calibration(void) {
 	uint32_t page[EEPROM_PAGE_SIZE/sizeof(uint32_t)];
 
-	bootloader_read_eeprom_page(ENERGY_CALIBRATION_PAGE, page);
+	bootloader_read_eeprom_page(ENERGY_OFFSET_CALIBRATION_PAGE, page);
 
 	// The magic number is not where it is supposed to be.
 	// This is either our first startup or something went wrong.
 	// We initialize the calibration data with sane default values.
 	if(page[ENERGY_CALIBRATION_MAGIC_POS] != ENERGY_CALIBRATION_MAGIC) {
-		// TODO: Use sane default values
-		energy.a_mid = 1; 
-		energy.v_mid = 1;
+		energy.offset_current = 8167; 
+		energy.offset_voltage = 7962;
 
-		energy_write_calibration(1, 1);
+		energy_write_offset_calibration(energy.offset_current, energy.offset_voltage);
 
 		return;
 	}
 
-	energy.a_mid = page[ENERGY_CALIBRATION_A_POS];
-	energy.v_mid = page[ENERGY_CALIBRATION_V_POS];
+	energy.offset_current = page[ENERGY_OFFSET_CALIBRATION_A_POS];
+	energy.offset_voltage = page[ENERGY_OFFSET_CALIBRATION_V_POS];
 
-	logd("Read calibration values: a %d, v %d\n\r", energy.a_mid, energy.v_mid);
+	logd("Read offset calibration values: a %d, v %d\n\r", energy.offset_current, energy.offset_voltage);
 }
 
-void energy_calibrate(void) {
+void energy_calibrate_offset(void) {
 	uint32_t a_sum = 0;
 	uint32_t v_sum = 0;
 
@@ -124,107 +110,306 @@ void energy_calibrate(void) {
 		v_sum += v;
 	}
 
-	energy.a_mid = a_sum / ENERGY_SAMPLES_NUM;
-	energy.v_mid = v_sum / ENERGY_SAMPLES_NUM;
+	energy.offset_current = a_sum / ENERGY_SAMPLES_NUM;
+	energy.offset_voltage = v_sum / ENERGY_SAMPLES_NUM;
 
-	energy_write_calibration(energy.a_mid, energy.v_mid);
+	energy_write_offset_calibration(energy.offset_current, energy.offset_voltage);
+}
+
+
+void energy_write_ratio_calibration(uint16_t a, uint16_t v) {
+	uint32_t page[EEPROM_PAGE_SIZE/sizeof(uint32_t)];
+	page[ENERGY_CALIBRATION_MAGIC_POS]    = ENERGY_CALIBRATION_MAGIC;
+	page[ENERGY_RATIO_CALIBRATION_A_POS] = a;
+	page[ENERGY_RATIO_CALIBRATION_V_POS] = v;
+
+	if(!bootloader_write_eeprom_page(ENERGY_RATIO_CALIBRATION_PAGE, page)) {
+		// TODO: Error handling?
+	}
+	
+	logd("Write ratio calibration values: a %d, v %d\n\r", a, v);
+}
+
+
+void energy_read_ratio_calibration(void) {
+	uint32_t page[EEPROM_PAGE_SIZE/sizeof(uint32_t)];
+
+	bootloader_read_eeprom_page(ENERGY_RATIO_CALIBRATION_PAGE, page);
+
+	// The magic number is not where it is supposed to be.
+	// This is either our first startup or something went wrong.
+	// We initialize the calibration data with sane default values.
+	if(page[ENERGY_CALIBRATION_MAGIC_POS] != ENERGY_CALIBRATION_MAGIC) {
+		energy.ratio_current = 3000; 
+		energy.ratio_voltage = 1800;
+
+		energy_write_ratio_calibration(energy.ratio_current, energy.ratio_voltage);
+
+		return;
+	}
+
+	energy.ratio_current = page[ENERGY_RATIO_CALIBRATION_A_POS];
+	energy.ratio_voltage = page[ENERGY_RATIO_CALIBRATION_V_POS];
+
+	logd("Read ratio calibration values: a %d, v %d\n\r", energy.ratio_current, energy.ratio_voltage);
+}
+
+void energy_tick_voltage_and_current(const int32_t v_adc_ac, const int32_t a_adc_ac) {
+	// Integrate voltage/current squares (for rms calculation) and V*A for real power calculation
+	energy.adc_v_squared_sum += v_adc_ac*v_adc_ac;
+	energy.adc_a_squared_sum += a_adc_ac*a_adc_ac;
+	energy.adc_w_sum         += v_adc_ac*a_adc_ac;
+	energy.sum_count++;
+
+	// We assume that we cross the zero point if the last measrued value was negative and the new one is positive.
+	// Additionally we wait for at least 50 measurements, to make sure that we don't have false-positives because
+	// of noise in the data.
+	energy.crossings_count++;
+	if((energy.crossings_count > 50) && (energy.last_v_adc) < 0 && (v_adc_ac >= 0)) {
+		energy.crossings_count = 0;
+		energy.crossings++;
+		energy.crossings_frequency++;
+	}
+	energy.last_v_adc = v_adc_ac;
+	energy.last_a_adc = a_adc_ac;
+
+	// Recalculate frequency every 300 crossings
+	// This is every 6 seconds at 50Hz net frequency, which gives a resolution of 0.01Hz.
+	if(energy.crossings_frequency >= 300) {
+		uint32_t new_time = system_timer_get_ms();
+		if(energy.crossings_frequency_time != 0) {
+			// Calculate frequency with 0.01Hz resolution
+			energy.frequency = 1000*100*300/((uint32_t)(new_time - energy.crossings_frequency_time));
+		}
+
+		energy.crossings_frequency_time = new_time;
+		energy.crossings_frequency = 0;
+	}
+
+	// We calculate new values every ENERGY_CROSSINGS_PER_CALCULATON crossings.
+	// A crossing here is the low to high zero-crossing of the sinusoidal voltage
+	if(energy.crossings >= ENERGY_CROSSINGS_PER_CALCULATON) {
+		XMC_GPIO_SetOutputHigh(P1_1);
+		// Calculate voltage RMS
+		// 330*750*ratio_v/(4*4095*56*100) (mV) => ratio_v*55/20384
+		energy.voltage = ((int64_t)(energy.ratio_voltage*55))*((int64_t)sqrt(energy.adc_v_squared_sum/energy.sum_count))/((int64_t)20384);
+
+		// Calculate current RMS
+		// 330*68*ratio_a/(4*4095*91*100) (mA)  => ratio_a*187/1242150
+		energy.current = ((int64_t)(energy.ratio_current*187))*((int64_t)sqrt(energy.adc_a_squared_sum/energy.sum_count))/((int64_t)1242150);
+
+		// Calculate real power
+		// ((ratio_v*55/20384) * (ratio_a*187/1242150)) / 100  => ratio_v*ratio_a*2057/506399712000 ~ ratio_v*ratio_a/246423218
+		energy.real_power = (((int64_t)(energy.ratio_voltage*energy.ratio_current))*energy.adc_w_sum)/(((int64_t)energy.sum_count)*((int64_t)246423218));
+
+		// Calculate apparent and reactive power from V/A RMS and real power
+		energy.apparent_power = (((int64_t)energy.voltage) * ((int64_t)energy.current)) / 100; // 0.01mV * 0.01mA = 0.0001mW => /100 = 0.1mW
+		energy.reactive_power = sqrt(((int64_t)energy.apparent_power)*((int64_t)energy.apparent_power) - ((int64_t)energy.real_power)*((int64_t)energy.real_power));
+
+		// Calculate power factor (W/VA)
+		energy.power_factor = (((int64_t)ABS(energy.real_power))*((int64_t)1000))/((int64_t)ABS(energy.apparent_power));
+
+		// The real power is the only unit with the correct sign,
+		// we adjust the current and the other powers accordingly.
+		if(energy.real_power < 0) {
+			energy.apparent_power *= -1;
+			energy.reactive_power *= -1;
+			energy.current        *= -1;
+		}
+
+		// Calculate Wh
+		uint32_t new_time  = system_timer_get_ms();
+		uint32_t time_diff = ((uint32_t)(new_time - energy.wh_sum_last));
+		energy.wh_sum_last = new_time;
+		// Internally we use Wms
+		energy.wh_sum      = energy.wh_sum + ((int64_t)energy.real_power)*((int64_t)time_diff);
+		// Externally for the API we calculate 0.01Wh
+		energy.energy      = energy.wh_sum/(1000*60*60);
+
+		// Set all sums back to 0 for next round of calculations
+		energy.adc_v_squared_sum = 0;
+		energy.adc_a_squared_sum = 0;
+		energy.adc_w_sum = 0;
+		energy.sum_count = 0;
+		energy.crossings = 0;
+		XMC_GPIO_SetOutputLow(P1_1);
+	}
+}
+
+void energy_tick_voltage(const int32_t v_adc_ac) {
+	// Integrate voltage squares (for rms calculation)
+	energy.adc_v_squared_sum += v_adc_ac*v_adc_ac;
+	energy.sum_count++;
+
+	// We assume that we cross the zero point if the last measrued value was negative and the new one is positive.
+	// Additionally we wait for at least 50 measurements, to make sure that we don't have false-positives because
+	// of noise in the data.
+	energy.crossings_count++;
+	if((energy.crossings_count > 50) && (energy.last_v_adc) < 0 && (v_adc_ac >= 0)) {
+		energy.crossings_count = 0;
+		energy.crossings++;
+		energy.crossings_frequency++;
+	}
+	energy.last_v_adc = v_adc_ac;
+
+	// Recalculate frequency every 300 crossings
+	// This is every 6 seconds at 50Hz net frequency, which gives a resolution of 0.01Hz.
+	if(energy.crossings_frequency >= 300) {
+		uint32_t new_time = system_timer_get_ms();
+		if(energy.crossings_frequency_time != 0) {
+			// Calculate frequency with 0.01Hz resolution
+			energy.frequency = 1000*100*300/((uint32_t)(new_time - energy.crossings_frequency_time));
+		}
+
+		energy.crossings_frequency_time = new_time;
+		energy.crossings_frequency = 0;
+	}
+
+	// We calculate new values every ENERGY_CROSSINGS_PER_CALCULATON crossings.
+	// A crossing here is the low to high zero-crossing of the sinusoidal voltage
+	if(energy.crossings >= ENERGY_CROSSINGS_PER_CALCULATON) {
+		XMC_GPIO_SetOutputHigh(P1_1);
+		// Calculate voltage RMS
+		// 330*750*ratio_v/(4*4095*56*100) (mV) => ratio_v*55/20384
+		energy.voltage = ((int64_t)(energy.ratio_voltage*55))*((int64_t)sqrt(energy.adc_v_squared_sum/energy.sum_count))/((int64_t)20384);
+
+		// We only have voltage here, we can't calculate any of the other values
+		energy.current        = 0;
+		energy.real_power     = 0;
+		energy.apparent_power = 0;
+		energy.reactive_power = 0;
+		energy.power_factor   = 0;
+		energy.energy         = 0;
+
+		// Set all sums back to 0 for next round of calculations
+		energy.adc_v_squared_sum = 0;
+		energy.adc_a_squared_sum = 0;
+		energy.adc_w_sum = 0;
+		energy.sum_count = 0;
+		energy.crossings = 0;
+		XMC_GPIO_SetOutputLow(P1_1);
+	}
+}
+
+void energy_tick_current(const int32_t a_adc_ac) {
+	// Integrate voltage/current squares (for rms calculation) and V*A for real power calculation
+	energy.adc_a_squared_sum += a_adc_ac*a_adc_ac;
+	energy.sum_count++;
+
+	// We assume that we cross the zero point if the last measrued value was negative and the new one is positive.
+	// Additionally we wait for at least 50 measurements, to make sure that we don't have false-positives because
+	// of noise in the data.
+	energy.crossings_count++;
+	if((energy.crossings_count > 50) && (energy.last_a_adc) < 0 && (a_adc_ac >= 0)) {
+		energy.crossings_count = 0;
+		energy.crossings++;
+		energy.crossings_frequency++;
+	}
+	energy.last_a_adc = a_adc_ac;
+
+	// Recalculate frequency every 300 crossings
+	// This is every 6 seconds at 50Hz net frequency, which gives a resolution of 0.01Hz.
+	if(energy.crossings_frequency >= 300) {
+		uint32_t new_time = system_timer_get_ms();
+		if(energy.crossings_frequency_time != 0) {
+			// Calculate frequency with 0.01Hz resolution
+			energy.frequency = 1000*100*300/((uint32_t)(new_time - energy.crossings_frequency_time));
+		}
+
+		energy.crossings_frequency_time = new_time;
+		energy.crossings_frequency = 0;
+	}
+
+	// We calculate new values every ENERGY_CROSSINGS_PER_CALCULATON crossings.
+	// A crossing here is the low to high zero-crossing of the sinusoidal voltage
+	if(energy.crossings >= ENERGY_CROSSINGS_PER_CALCULATON) {
+		XMC_GPIO_SetOutputHigh(P1_1);
+		// Calculate current RMS
+		// 330*68*ratio_a/(4*4095*91*100) (mA)  => ratio_a*187/1242150
+		energy.current = ((int64_t)(energy.ratio_current*187))*((int64_t)sqrt(energy.adc_a_squared_sum/energy.sum_count))/((int64_t)1242150);
+
+		// We only have current here, we can't calculate any of the other values
+		energy.voltage        = 0;
+		energy.real_power     = 0;
+		energy.apparent_power = 0;
+		energy.reactive_power = 0;
+		energy.power_factor   = 0;
+		energy.energy         = 0;
+
+		// Set all sums back to 0 for next round of calculations
+		energy.adc_v_squared_sum = 0;
+		energy.adc_a_squared_sum = 0;
+		energy.adc_w_sum = 0;
+		energy.sum_count = 0;
+		energy.crossings = 0;
+		XMC_GPIO_SetOutputLow(P1_1);
+	}
 }
 
 void energy_tick(void) {
-	static uint32_t t = 0;
+	if(energy.calibrate_offset_new) {
+		energy.calibrate_offset_new = false;
+		energy_calibrate_offset();
+	}
 
-	if(energy.calibrate) {
-		energy.calibrate = false;
-		energy_calibrate();
+	if(energy.calibrate_ratio_new) {
+		energy.calibrate_ratio_new = false;
+		energy_write_ratio_calibration(energy.ratio_current, energy.ratio_voltage);
 	}
 
 	while(energy_samples_start_cur != energy_samples_end_cur) {
+		// Check if transformers are connected. 
+		// If a plug is disconnected we wait for it to be connected for at least two loops in a row
+		// to make sure that we don't have use the measured values during the plugging of the connector.
+		const bool new_voltage_transformer_connected = XMC_GPIO_GetInput(ENERGY_V_PLUG_PIN);
+		const bool new_current_transformer_connected = XMC_GPIO_GetInput(ENERGY_A_PLUG_PIN);
+		const bool voltage_transformer_connected = new_voltage_transformer_connected && energy.last_voltage_transformer_connected;
+		const bool current_transformer_connected = new_current_transformer_connected && energy.last_current_transformer_connected;
+		energy.last_voltage_transformer_connected = new_voltage_transformer_connected;
+		energy.last_current_transformer_connected = new_current_transformer_connected;
+
 		const uint16_t index = energy_samples_start_cur - energy_samples_start;
 
+		// Get oldest ADC sample and split it in voltage and current values
 		const uint32_t sample = *energy_samples_start_cur;
-		const uint16_t a_adc_dc = (sample >>  0) & 0xFFFF;
-		const uint16_t v_adc_dc = (sample >> 16) & 0xFFFF;
-
-		const int32_t a_adc_ac = a_adc_dc - energy.a_mid;
-		const int32_t v_adc_ac = v_adc_dc - energy.v_mid;
-
-#if 0
-		const int32_t a_voltage_ac = 3300*a_adc_ac/(4*4095);
-		const int32_t v_voltage_ac = 3300*v_adc_ac/(4*4095);
-
-		const int32_t a_input_voltage_ac = a_voltage_ac*68/91;    // 91k/68k
-		const int32_t v_input_voltage_ac = v_voltage_ac*750/56;   // 5.6k/75k
-
-		const int32_t mains_ma = a_input_voltage_ac*30;           // 1V = 30A, x windings => 1V = 30/xA
-		const int32_t mains_mv = v_input_voltage_ac*18;           // 230/12.8 = 17.96875 ~ 18
-#endif
-
-		energy.waveform_a[index] = (3740*a_adc_ac)  / (8281);    // 1/100 A
-		energy.waveform_v[index] = (12375*v_adc_ac) / (2548*10); // 1/10 V
-		energy.waveform_last_index = index;
-
 		if(energy_samples_start_cur == energy_samples_end) {
 			energy_samples_start_cur = energy_samples_start;
 		} else {
 			energy_samples_start_cur++;
 		}
 
-		energy.adc_v_squared_sum += v_adc_ac*v_adc_ac;
-		energy.adc_a_squared_sum += a_adc_ac*a_adc_ac;
-		energy.adc_w_sum         += v_adc_ac*a_adc_ac;
-		energy.sum_count++;
+		const uint16_t a_adc_dc = (sample >>  0) & 0xFFFF;
+		const uint16_t v_adc_dc = (sample >> 16) & 0xFFFF;
 
-		energy.crossings_count++;
-		// We assume that we cross the zero point if the last measrued value was negative and the new one is positive.
-		// Additionally we wait for at least 50 measurements, to make sure that we don't have false-positives because
-		// of noise in the data.
-		if((energy.crossings_count > 50) && (energy.last_v_adc) < 0 && (v_adc_ac >= 0)) {
-			energy.crossings_count = 0;
-			energy.crossings++;
-			energy.crossings_frequency++;
-		}
-		energy.last_v_adc = v_adc_ac;
+		// Remove offset from ADC value. Now ADC value 0 is the 0 value of the sinus.
+		const int32_t a_adc_ac = a_adc_dc - energy.offset_current;
+		const int32_t v_adc_ac = v_adc_dc - energy.offset_voltage;
 
-		if(energy.crossings_frequency >= 300) {
-			uint32_t new_time = system_timer_get_ms();
-			if(energy.crossings_frequency_time != 0) {
-				energy.frequency = 1000*100*300/((uint32_t)(new_time - energy.crossings_frequency_time));
-			}
+		// Save 16bit value of the current for waveform drawing
+		// ratio_a*187/1242150   ~ ratio_a/6643
+		energy.waveform_a[index] = current_transformer_connected ? (energy.ratio_current*a_adc_ac) / 6643 : 0; // 1/100 A
 
-			energy.crossings_frequency_time = new_time;
-			energy.crossings_frequency = 0;
-		}
+		// Save 16bit value of the voltage for waveform drawing
+		// ratio_v*55/(20384*10) ~ ratio_v/3706
+		energy.waveform_v[index] = voltage_transformer_connected ? (energy.ratio_voltage*v_adc_ac) / 3706 : 0; // 1/10 V
+		energy.waveform_last_index = index;
 
-		if(energy.crossings >= 10) {
-			// 330*750*18/(4*4095*56) (mV)  => 12375/2548
-			energy.voltage = 12375*sqrt(energy.adc_v_squared_sum/energy.sum_count)/2548;
-			// 330*68*30/(4*4095*91) (mA)   => 3740/8281
-			energy.current = 3740*sqrt(energy.adc_a_squared_sum/energy.sum_count)/8281;
-			// ((12375/2548) * (3740/8281)) / 100 => 462825/21099988
-			energy.real_power = (((int64_t)462825)*energy.adc_w_sum)/(((int64_t)energy.sum_count)*((int64_t)21099988));
-
-			// 0.01mV * 0.01mA = 0.0001mW => /100 = 0.1mW
-			energy.apparent_power = (((int64_t)energy.voltage) * ((int64_t)energy.current)) / 100;
-			energy.reactive_power = sqrt(((int64_t)energy.apparent_power)*((int64_t)energy.apparent_power) - ((int64_t)energy.real_power)*((int64_t)energy.real_power));
-			energy.power_factor = (((int64_t)ABS(energy.real_power))*((int64_t)1000))/((int64_t)ABS(energy.apparent_power));
-
-			if(energy.real_power < 0) {
-				energy.apparent_power *= -1;
-				energy.reactive_power *= -1;
-				energy.current        *= -1;
-			}
-
-			uint32_t new_time  = system_timer_get_ms();
-			uint32_t time_diff = ((uint32_t)(new_time - energy.wh_sum_last));
-			energy.wh_sum_last = new_time;
-			energy.wh_sum      = energy.wh_sum + ((int64_t)energy.real_power)*((int64_t)time_diff);
-			energy.energy      = energy.wh_sum/(1000*60*60);
-
-			energy.adc_v_squared_sum = 0;
-			energy.adc_a_squared_sum = 0;
-			energy.adc_w_sum = 0;
-			energy.sum_count = 0;
-			energy.crossings = 0;
+		if(voltage_transformer_connected && current_transformer_connected) {
+			energy_tick_voltage_and_current(v_adc_ac, a_adc_ac);
+		} else if(voltage_transformer_connected) {
+			energy_tick_voltage(v_adc_ac);
+		} else if(current_transformer_connected) {
+			energy_tick_current(a_adc_ac);
+		} else {
+			// If no transformer is connected we set everything to 0.
+			energy.voltage        = 0;
+			energy.current        = 0;
+			energy.real_power     = 0;
+			energy.apparent_power = 0;
+			energy.reactive_power = 0;
+			energy.power_factor   = 0;
+			energy.energy         = 0;
+			energy.frequency      = 0;
 		}
 	}
 }
@@ -418,6 +603,11 @@ void energy_init(void) {
 		.input_hysteresis = XMC_GPIO_INPUT_HYSTERESIS_STANDARD
 	};
 
+	XMC_GPIO_CONFIG_t pullup = {
+		.mode = XMC_GPIO_MODE_INPUT_PULL_UP,
+		.input_hysteresis = XMC_GPIO_INPUT_HYSTERESIS_STANDARD
+	};
+
 	XMC_GPIO_CONFIG_t output = {
 		.mode = XMC_GPIO_MODE_OUTPUT_PUSH_PULL,
 		.output_level = XMC_GPIO_OUTPUT_LEVEL_HIGH
@@ -427,7 +617,11 @@ void energy_init(void) {
 	XMC_GPIO_Init(ENERGY_A_ADC_PIN, &input);
 	XMC_GPIO_Init(ENERGY_V_ADC_PIN, &input);
 
-	energy_read_calibration();
+	XMC_GPIO_Init(ENERGY_A_PLUG_PIN, &pullup);
+	XMC_GPIO_Init(ENERGY_V_PLUG_PIN, &pullup);
+
+	energy_read_offset_calibration();
+	energy_read_ratio_calibration();
 
 	energy_init_adc();
 }

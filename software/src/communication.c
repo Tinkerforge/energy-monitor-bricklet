@@ -25,13 +25,17 @@
 #include "bricklib2/utility/util_definitions.h"
 #include "bricklib2/protocols/tfp/tfp.h"
 
+#include "xmc_gpio.h"
+
 #include "energy.h"
+#include "configs/config_energy.h"
 
 BootloaderHandleMessageResponse handle_message(const void *message, void *response) {
 	switch(tfp_get_fid_from_message(message)) {
 		case FID_GET_ENERGY_DATA: return get_energy_data(message, response);
 		case FID_RESET_ENERGY: return reset_energy(message);
 		case FID_GET_WAVEFORM_LOW_LEVEL: return get_waveform_low_level(message, response);
+		case FID_GET_TRANSFORMER_STATUS: return get_transformer_status(message, response);
 		case FID_SET_TRANSFORMER_CALIBRATION: return set_transformer_calibration(message);
 		case FID_GET_TRANSFORMER_CALIBRATION: return get_transformer_calibration(message, response);
 		case FID_CALIBRATE_OFFSET: return calibrate_offset(message);
@@ -57,6 +61,8 @@ BootloaderHandleMessageResponse get_energy_data(const GetEnergyData *data, GetEn
 }
 
 BootloaderHandleMessageResponse reset_energy(const ResetEnergy *data) {
+	energy.energy = 0;
+	energy.wh_sum = 0;
 
 	return HANDLE_MESSAGE_RESPONSE_EMPTY;
 }
@@ -115,18 +121,34 @@ BootloaderHandleMessageResponse get_waveform_low_level(const GetWaveformLowLevel
 	return HANDLE_MESSAGE_RESPONSE_NEW_MESSAGE;
 }
 
+BootloaderHandleMessageResponse get_transformer_status(const GetTransformerStatus *data, GetTransformerStatus_Response *response) {
+	response->header.length                 = sizeof(GetTransformerStatus_Response);
+	response->voltage_transformer_connected = XMC_GPIO_GetInput(ENERGY_V_PLUG_PIN);
+	response->current_transformer_connected = XMC_GPIO_GetInput(ENERGY_A_PLUG_PIN);
+
+	return HANDLE_MESSAGE_RESPONSE_NEW_MESSAGE;
+}
+
 BootloaderHandleMessageResponse set_transformer_calibration(const SetTransformerCalibration *data) {
+	energy.ratio_voltage = data->voltage_ratio;
+	energy.ratio_current = data->current_ratio;
+	// We ignore phase shift for now.
+	energy.calibrate_ratio_new = true;
 
 	return HANDLE_MESSAGE_RESPONSE_EMPTY;
 }
 
 BootloaderHandleMessageResponse get_transformer_calibration(const GetTransformerCalibration *data, GetTransformerCalibration_Response *response) {
 	response->header.length = sizeof(GetTransformerCalibration_Response);
+	response->voltage_ratio = energy.ratio_voltage;
+	response->current_ratio = energy.ratio_current;
+	response->phase_shift   = 0;
 
 	return HANDLE_MESSAGE_RESPONSE_NEW_MESSAGE;
 }
 
 BootloaderHandleMessageResponse calibrate_offset(const CalibrateOffset *data) {
+	energy.calibrate_offset_new = true;
 
 	return HANDLE_MESSAGE_RESPONSE_EMPTY;
 }

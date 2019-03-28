@@ -56,13 +56,14 @@ void communication_init(void);
 #define FID_GET_ENERGY_DATA 1
 #define FID_RESET_ENERGY 2
 #define FID_GET_WAVEFORM_LOW_LEVEL 3
-#define FID_SET_TRANSFORMER_CALIBRATION 4
-#define FID_GET_TRANSFORMER_CALIBRATION 5
-#define FID_CALIBRATE_OFFSET 6
-#define FID_SET_ENERGY_DATA_CALLBACK_CONFIGURATION 7
-#define FID_GET_ENERGY_DATA_CALLBACK_CONFIGURATION 8
+#define FID_GET_TRANSFORMER_STATUS 4
+#define FID_SET_TRANSFORMER_CALIBRATION 5
+#define FID_GET_TRANSFORMER_CALIBRATION 6
+#define FID_CALIBRATE_OFFSET 7
+#define FID_SET_ENERGY_DATA_CALLBACK_CONFIGURATION 8
+#define FID_GET_ENERGY_DATA_CALLBACK_CONFIGURATION 9
 
-#define FID_CALLBACK_ENERGY_DATA 9
+#define FID_CALLBACK_ENERGY_DATA 10
 
 typedef struct {
 	TFPMessageHeader header;
@@ -93,6 +94,16 @@ typedef struct {
 	uint16_t waveform_chunk_offset;
 	int16_t waveform_chunk_data[30];
 } __attribute__((__packed__)) GetWaveformLowLevel_Response;
+
+typedef struct {
+	TFPMessageHeader header;
+} __attribute__((__packed__)) GetTransformerStatus;
+
+typedef struct {
+	TFPMessageHeader header;
+	bool voltage_transformer_connected;
+	bool current_transformer_connected;
+} __attribute__((__packed__)) GetTransformerStatus_Response;
 
 typedef struct {
 	TFPMessageHeader header;
@@ -149,6 +160,7 @@ typedef struct {
 BootloaderHandleMessageResponse get_energy_data(const GetEnergyData *data, GetEnergyData_Response *response);
 BootloaderHandleMessageResponse reset_energy(const ResetEnergy *data);
 BootloaderHandleMessageResponse get_waveform_low_level(const GetWaveformLowLevel *data, GetWaveformLowLevel_Response *response);
+BootloaderHandleMessageResponse get_transformer_status(const GetTransformerStatus *data, GetTransformerStatus_Response *response);
 BootloaderHandleMessageResponse set_transformer_calibration(const SetTransformerCalibration *data);
 BootloaderHandleMessageResponse get_transformer_calibration(const GetTransformerCalibration *data, GetTransformerCalibration_Response *response);
 BootloaderHandleMessageResponse calibrate_offset(const CalibrateOffset *data);
