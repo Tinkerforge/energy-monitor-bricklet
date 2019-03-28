@@ -40,54 +40,54 @@
 #define ENERGY_API_SAMPLES_NUM (1024 - 256)
 
 typedef struct {
-    uint32_t samples[ENERGY_SAMPLES_NUM]; // ampere | (voltage << 16)
+	uint32_t samples[ENERGY_SAMPLES_NUM]; // ampere | (voltage << 16)
 
-    int16_t waveform_a[ENERGY_SAMPLES_NUM];
-    int16_t waveform_v[ENERGY_SAMPLES_NUM];
+	int16_t waveform_a[ENERGY_SAMPLES_NUM];
+	int16_t waveform_v[ENERGY_SAMPLES_NUM];
 
-    int16_t waveform_a_api[ENERGY_API_SAMPLES_NUM];
-    int16_t waveform_v_api[ENERGY_API_SAMPLES_NUM];
+	int16_t waveform_a_api[ENERGY_API_SAMPLES_NUM];
+	int16_t waveform_v_api[ENERGY_API_SAMPLES_NUM];
 
-    int32_t last_v_adc;
-    int32_t last_a_adc;
+	int32_t last_v_adc;
+	int32_t last_a_adc;
 
-    bool last_voltage_transformer_connected;
-    bool last_current_transformer_connected;
+	bool last_voltage_transformer_connected;
+	bool last_current_transformer_connected;
 
-    bool calibrate_offset_new;
-    uint16_t offset_voltage;
-    uint16_t offset_current;
-    bool calibrate_ratio_new;
-    uint16_t ratio_voltage;
-    uint16_t ratio_current;
+	bool calibrate_offset_new;
+	uint16_t offset_voltage;
+	uint16_t offset_current;
+	bool calibrate_ratio_new;
+	uint16_t ratio_voltage;
+	uint16_t ratio_current;
 
-    uint32_t energy_cb_period;
+	uint32_t energy_cb_period;
 	bool energy_cb_value_has_to_change;
 
-    uint16_t waveform_last_index;
-    uint16_t waveform_api_index;
+	uint16_t waveform_last_index;
+	uint16_t waveform_api_index;
 
-    uint32_t crossings_frequency_time;
-    uint32_t crossings_frequency;
-    uint32_t crossings_count;
-    uint32_t crossings;
-    int64_t adc_a_squared_sum;
-    int64_t adc_v_squared_sum;
-    int64_t adc_w_sum;
-    uint32_t sum_count;
+	uint32_t crossings_frequency_time;
+	uint32_t crossings_frequency;
+	uint32_t crossings_count;
+	uint32_t crossings;
+	int64_t adc_a_squared_sum;
+	int64_t adc_v_squared_sum;
+	int64_t adc_w_sum;
+	uint32_t sum_count;
 
-    uint32_t wh_sum_last;
-    uint32_t wh_sum_time;
-    int64_t wh_sum;
+	uint32_t wh_sum_last;
+	uint32_t wh_sum_time;
+	int64_t wh_sum;
 
-    int32_t voltage;        // mV RMS
+	int32_t voltage;        // mV RMS
 	int32_t current;        // mA RMS
-    int32_t energy;         // mWh
+	int32_t energy;         // mWh
 	int32_t real_power;     // W
 	int32_t apparent_power; // VA
 	int32_t reactive_power; // VAR
 	uint16_t power_factor;
-    uint16_t frequency;     // Hz
+	uint16_t frequency;     // Hz
 } Energy;
 
 extern Energy energy;
