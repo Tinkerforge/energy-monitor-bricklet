@@ -189,7 +189,6 @@ void energy_tick_voltage_and_current(const int32_t v_adc_ac, const int32_t a_adc
 	// We calculate new values every ENERGY_CROSSINGS_PER_CALCULATON crossings.
 	// A crossing here is the low to high zero-crossing of the sinusoidal voltage
 	if(energy.crossings >= ENERGY_CROSSINGS_PER_CALCULATON) {
-		XMC_GPIO_SetOutputHigh(P1_1);
 		// Calculate voltage RMS
 		// 330*750*ratio_v/(4*4095*56*100) (mV) => ratio_v*55/20384
 		energy.voltage = ((int64_t)(energy.ratio_voltage*55))*((int64_t)sqrt(energy.adc_v_squared_sum/energy.sum_count))/((int64_t)20384);
@@ -232,7 +231,6 @@ void energy_tick_voltage_and_current(const int32_t v_adc_ac, const int32_t a_adc
 		energy.adc_w_sum = 0;
 		energy.sum_count = 0;
 		energy.crossings = 0;
-		XMC_GPIO_SetOutputLow(P1_1);
 	}
 }
 
@@ -268,7 +266,6 @@ void energy_tick_voltage(const int32_t v_adc_ac) {
 	// We calculate new values every ENERGY_CROSSINGS_PER_CALCULATON crossings.
 	// A crossing here is the low to high zero-crossing of the sinusoidal voltage
 	if(energy.crossings >= ENERGY_CROSSINGS_PER_CALCULATON) {
-		XMC_GPIO_SetOutputHigh(P1_1);
 		// Calculate voltage RMS
 		// 330*750*ratio_v/(4*4095*56*100) (mV) => ratio_v*55/20384
 		energy.voltage = ((int64_t)(energy.ratio_voltage*55))*((int64_t)sqrt(energy.adc_v_squared_sum/energy.sum_count))/((int64_t)20384);
@@ -287,7 +284,6 @@ void energy_tick_voltage(const int32_t v_adc_ac) {
 		energy.adc_w_sum = 0;
 		energy.sum_count = 0;
 		energy.crossings = 0;
-		XMC_GPIO_SetOutputLow(P1_1);
 	}
 }
 
@@ -342,7 +338,6 @@ void energy_tick_current(const int32_t a_adc_ac) {
 		energy.adc_w_sum = 0;
 		energy.sum_count = 0;
 		energy.crossings = 0;
-		XMC_GPIO_SetOutputLow(P1_1);
 	}
 }
 
