@@ -29,14 +29,18 @@
 #include "bricklib2/logging/logging.h"
 #include "communication.h"
 
+#include "energy.h"
+
 int main(void) {
 	logging_init();
 	logd("Start Energy Monitor Bricklet\n\r");
 
 	communication_init();
+	energy_init();
 
 	while(true) {
 		bootloader_tick();
 		communication_tick();
+		energy_tick();
 	}
 }
