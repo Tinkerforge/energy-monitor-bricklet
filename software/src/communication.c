@@ -24,6 +24,7 @@
 #include "bricklib2/utility/communication_callback.h"
 #include "bricklib2/utility/util_definitions.h"
 #include "bricklib2/protocols/tfp/tfp.h"
+#include "bricklib2/hal/system_timer/system_timer.h"
 
 #include "xmc_gpio.h"
 
@@ -154,28 +155,72 @@ BootloaderHandleMessageResponse calibrate_offset(const CalibrateOffset *data) {
 }
 
 BootloaderHandleMessageResponse set_energy_data_callback_configuration(const SetEnergyDataCallbackConfiguration *data) {
+	energy.energy_cb_period              = data->period;
+	energy.energy_cb_value_has_to_change = data->value_has_to_change;
 
 	return HANDLE_MESSAGE_RESPONSE_EMPTY;
 }
 
 BootloaderHandleMessageResponse get_energy_data_callback_configuration(const GetEnergyDataCallbackConfiguration *data, GetEnergyDataCallbackConfiguration_Response *response) {
-	response->header.length = sizeof(GetEnergyDataCallbackConfiguration_Response);
+	response->header.length       = sizeof(GetEnergyDataCallbackConfiguration_Response);
+	response->period              = energy.energy_cb_period;
+	response->value_has_to_change = energy.energy_cb_value_has_to_change;
 
 	return HANDLE_MESSAGE_RESPONSE_NEW_MESSAGE;
 }
 
 
-
-
 bool handle_energy_data_callback(void) {
 	static bool is_buffered = false;
 	static EnergyData_Callback cb;
+	static int32_t  last_voltage        = 0;
+	static int32_t  last_current        = 0;
+	static int32_t  last_energy         = 0;
+	static int32_t  last_real_power     = 0;
+	static int32_t  last_apparent_power = 0;
+	static int32_t  last_reactive_power = 0;
+	static uint16_t last_power_factor   = 0;
+	static uint16_t last_frequency      = 0;
+	static uint32_t last_time           = 0;
 
 	if(!is_buffered) {
-		tfp_make_default_header(&cb.header, bootloader_get_uid(), sizeof(EnergyData_Callback), FID_CALLBACK_ENERGY_DATA);
-		// TODO: Implement EnergyData callback handling
+		if(energy.energy_cb_period == 0 ||
+		    !system_timer_is_time_elapsed_ms(last_time, energy.energy_cb_period)) {
+			return false;
+		}
 
-		return false;
+		if(energy.energy_cb_value_has_to_change &&
+		   (energy.voltage        == last_voltage) &&
+		   (energy.current        == last_current) &&
+		   (energy.energy         == last_energy) &&
+		   (energy.real_power     == last_real_power) &&
+		   (energy.apparent_power == last_apparent_power) &&
+		   (energy.reactive_power == last_reactive_power) &&
+		   (energy.power_factor   == last_power_factor) &&
+		   (energy.frequency      == last_frequency)) {
+			return false;
+		}
+
+		tfp_make_default_header(&cb.header, bootloader_get_uid(), sizeof(EnergyData_Callback), FID_CALLBACK_ENERGY_DATA);
+		cb.voltage          = energy.voltage;
+		cb.current          = energy.current;
+		cb.energy           = energy.energy;
+		cb.real_power       = energy.real_power;
+		cb.apparent_power   = energy.apparent_power;
+		cb.reactive_power   = energy.reactive_power;
+		cb.power_factor     = energy.power_factor;
+		cb.frequency        = energy.frequency;
+
+		last_voltage        = cb.voltage;
+		last_current        = cb.current;
+		last_energy         = cb.energy;
+		last_real_power     = cb.real_power;
+		last_apparent_power = cb.apparent_power;
+		last_reactive_power = cb.reactive_power;
+		last_power_factor   = cb.power_factor;
+		last_frequency      = cb.frequency;
+
+		last_time           = system_timer_get_ms();
 	}
 
 	if(bootloader_spitfp_is_send_possible(&bootloader_status.st)) {

@@ -61,6 +61,9 @@ typedef struct {
     uint16_t ratio_voltage;
     uint16_t ratio_current;
 
+    uint32_t energy_cb_period;
+	bool energy_cb_value_has_to_change;
+
     uint16_t waveform_last_index;
     uint16_t waveform_api_index;
 
