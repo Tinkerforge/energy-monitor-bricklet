@@ -80,14 +80,14 @@ typedef struct {
 	uint32_t wh_sum_time;
 	int64_t wh_sum;
 
-	int32_t voltage;        // mV RMS
-	int32_t current;        // mA RMS
-	int32_t energy;         // mWh
-	int32_t real_power;     // W
-	int32_t apparent_power; // VA
-	int32_t reactive_power; // VAR
-	uint16_t power_factor;
-	uint16_t frequency;     // Hz
+	int32_t voltage;        // 10mV RMS
+	int32_t current;        // 10mA RMS
+	int32_t energy;         // 10mWh
+	int32_t real_power;     // 10mW
+	int32_t apparent_power; // 10mVA
+	int32_t reactive_power; // 10mVAR
+	uint16_t power_factor;  // 1/1000
+	uint16_t frequency;     // 1/100Hz
 } Energy;
 
 extern Energy energy;
