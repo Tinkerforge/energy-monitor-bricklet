@@ -176,10 +176,13 @@ void energy_tick_voltage_and_current(const int32_t v_adc_ac, const int32_t a_adc
 	// Recalculate frequency every 300 crossings
 	// This is every 6 seconds at 50Hz net frequency, which gives a resolution of 0.01Hz.
 	if(energy.crossings_frequency >= 300) {
-		uint32_t new_time = system_timer_get_ms();
+		const uint32_t new_time = system_timer_get_ms();
 		if(energy.crossings_frequency_time != 0) {
 			// Calculate frequency with 0.01Hz resolution
-			energy.frequency = 1000*100*300/((uint32_t)(new_time - energy.crossings_frequency_time));
+			const uint32_t diff = new_time - energy.crossings_frequency_time;
+			if(diff != 0) {
+				energy.frequency = 1000*100*300/diff;
+			}
 		}
 
 		energy.crossings_frequency_time = new_time;
@@ -189,24 +192,40 @@ void energy_tick_voltage_and_current(const int32_t v_adc_ac, const int32_t a_adc
 	// We calculate new values every ENERGY_CROSSINGS_PER_CALCULATON crossings.
 	// A crossing here is the low to high zero-crossing of the sinusoidal voltage
 	if(energy.crossings >= ENERGY_CROSSINGS_PER_CALCULATON) {
-		// Calculate voltage RMS
-		// 330*750*ratio_v/(4*4095*56*100) (mV) => ratio_v*55/20384
-		energy.voltage = ((int64_t)(energy.ratio_voltage*55))*((int64_t)sqrt(energy.adc_v_squared_sum/energy.sum_count))/((int64_t)20384);
+		if(energy.sum_count == 0) {
+			energy.voltage    = 0;
+			energy.current    = 0;
+			energy.real_power = 0;
+		} else {
+			// Calculate voltage RMS
+			// 330*750*ratio_v/(4*4095*56*100) (mV) => ratio_v*55/20384
+			energy.voltage    = ((int64_t)(energy.ratio_voltage*55))*((int64_t)sqrt(energy.adc_v_squared_sum/energy.sum_count))/((int64_t)20384);
 
-		// Calculate current RMS
-		// 330*68*ratio_a/(4*4095*91*100) (mA)  => ratio_a*187/1242150
-		energy.current = ((int64_t)(energy.ratio_current*187))*((int64_t)sqrt(energy.adc_a_squared_sum/energy.sum_count))/((int64_t)1242150);
+			// Calculate current RMS
+			// 330*68*ratio_a/(4*4095*91*100) (mA)  => ratio_a*187/1242150
+			energy.current    = ((int64_t)(energy.ratio_current*187))*((int64_t)sqrt(energy.adc_a_squared_sum/energy.sum_count))/((int64_t)1242150);
 
-		// Calculate real power
-		// ((ratio_v*55/20384) * (ratio_a*187/1242150)) / 100  => ratio_v*ratio_a*2057/506399712000 ~ ratio_v*ratio_a/246423218
-		energy.real_power = (((int64_t)(energy.ratio_voltage*energy.ratio_current))*energy.adc_w_sum)/(((int64_t)energy.sum_count)*((int64_t)246423218));
+			// Calculate real power
+			// ((ratio_v*55/20384) * (ratio_a*187/1242150)) / 100  => ratio_v*ratio_a*2057/506399712000 ~ ratio_v*ratio_a/246423218
+			energy.real_power = (((int64_t)(energy.ratio_voltage*energy.ratio_current))*energy.adc_w_sum)/(((int64_t)energy.sum_count)*((int64_t)246423218));
+		}
 
 		// Calculate apparent and reactive power from V/A RMS and real power
 		energy.apparent_power = (((int64_t)energy.voltage) * ((int64_t)energy.current)) / 100; // 0.01mV * 0.01mA = 0.0001mW => /100 = 0.1mW
-		energy.reactive_power = sqrt(((int64_t)energy.apparent_power)*((int64_t)energy.apparent_power) - ((int64_t)energy.real_power)*((int64_t)energy.real_power));
+		int64_t power_square_diff = ((int64_t)energy.apparent_power)*((int64_t)energy.apparent_power) - ((int64_t)energy.real_power)*((int64_t)energy.real_power);
+		if(power_square_diff > 0) {
+			energy.reactive_power = sqrt(power_square_diff);
+		} else {
+			energy.reactive_power = 0;
+
+		}
 
 		// Calculate power factor (W/VA)
-		energy.power_factor = (((int64_t)ABS(energy.real_power))*((int64_t)1000))/((int64_t)ABS(energy.apparent_power));
+		if(energy.apparent_power == 0) {
+			energy.power_factor = 0;
+		} else {
+			energy.power_factor = (((int64_t)ABS(energy.real_power))*((int64_t)1000))/((int64_t)ABS(energy.apparent_power));
+		}
 
 		// The real power is the only unit with the correct sign,
 		// we adjust the current and the other powers accordingly.
@@ -253,12 +272,14 @@ void energy_tick_voltage(const int32_t v_adc_ac) {
 	// Recalculate frequency every 300 crossings
 	// This is every 6 seconds at 50Hz net frequency, which gives a resolution of 0.01Hz.
 	if(energy.crossings_frequency >= 300) {
-		uint32_t new_time = system_timer_get_ms();
+		const uint32_t new_time = system_timer_get_ms();
 		if(energy.crossings_frequency_time != 0) {
 			// Calculate frequency with 0.01Hz resolution
-			energy.frequency = 1000*100*300/((uint32_t)(new_time - energy.crossings_frequency_time));
+			const uint32_t diff = new_time - energy.crossings_frequency_time;
+			if(diff != 0) {
+				energy.frequency = 1000*100*300/diff;
+			}
 		}
-
 		energy.crossings_frequency_time = new_time;
 		energy.crossings_frequency = 0;
 	}
@@ -268,7 +289,11 @@ void energy_tick_voltage(const int32_t v_adc_ac) {
 	if(energy.crossings >= ENERGY_CROSSINGS_PER_CALCULATON) {
 		// Calculate voltage RMS
 		// 330*750*ratio_v/(4*4095*56*100) (mV) => ratio_v*55/20384
-		energy.voltage = ((int64_t)(energy.ratio_voltage*55))*((int64_t)sqrt(energy.adc_v_squared_sum/energy.sum_count))/((int64_t)20384);
+		if(energy.sum_count == 0) {
+			energy.voltage = 0;
+		} else {
+			energy.voltage = ((int64_t)(energy.ratio_voltage*55))*((int64_t)sqrt(energy.adc_v_squared_sum/energy.sum_count))/((int64_t)20384);
+		}
 
 		// We only have voltage here, we can't calculate any of the other values
 		energy.current        = 0;
@@ -306,10 +331,13 @@ void energy_tick_current(const int32_t a_adc_ac) {
 	// Recalculate frequency every 300 crossings
 	// This is every 6 seconds at 50Hz net frequency, which gives a resolution of 0.01Hz.
 	if(energy.crossings_frequency >= 300) {
-		uint32_t new_time = system_timer_get_ms();
+		const uint32_t new_time = system_timer_get_ms();
 		if(energy.crossings_frequency_time != 0) {
 			// Calculate frequency with 0.01Hz resolution
-			energy.frequency = 1000*100*300/((uint32_t)(new_time - energy.crossings_frequency_time));
+			const uint32_t diff = new_time - energy.crossings_frequency_time;
+			if(diff != 0) {
+				energy.frequency = 1000*100*300/diff;
+			}
 		}
 
 		energy.crossings_frequency_time = new_time;
@@ -322,7 +350,11 @@ void energy_tick_current(const int32_t a_adc_ac) {
 		XMC_GPIO_SetOutputHigh(P1_1);
 		// Calculate current RMS
 		// 330*68*ratio_a/(4*4095*91*100) (mA)  => ratio_a*187/1242150
-		energy.current = ((int64_t)(energy.ratio_current*187))*((int64_t)sqrt(energy.adc_a_squared_sum/energy.sum_count))/((int64_t)1242150);
+		if(energy.sum_count == 0) {
+			energy.current = 0;
+		} else {
+			energy.current = ((int64_t)(energy.ratio_current*187))*((int64_t)sqrt(energy.adc_a_squared_sum/energy.sum_count))/((int64_t)1242150);
+		}
 
 		// We only have current here, we can't calculate any of the other values
 		energy.voltage        = 0;
@@ -417,7 +449,6 @@ void energy_init_adc(void) {
 	if(clock_reset_check) {
 		arbitration_status = XMC_VADC_GROUP_ScanIsArbitrationSlotEnabled(ENERGY_ADC_MASTER_GROUP);
 	}
-
 
 	// Global ADC initialization
 	const XMC_VADC_GLOBAL_CONFIG_t adc_global_config = {
