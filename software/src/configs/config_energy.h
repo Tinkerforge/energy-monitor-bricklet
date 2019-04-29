@@ -41,7 +41,7 @@
 #define ENERGY_A_ADC_GROUP            VADC_G0
 #define ENERGY_A_ADC_GROUP_INDEX      0
 
-#define ENERGY_V_ADC_PIN              P2_2
+#define ENERGY_V_ADC_PIN              P2_7
 #define ENERGY_V_ADC_CHANNEL          0
 #define ENERGY_V_ADC_RESULT_REG       10
 #define ENERGY_V_ADC_ALIAS            XMC_VADC_CHANNEL_ALIAS_CH1
