@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:energy-monitor-cache
 EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
@@ -631,7 +632,6 @@ F 3 "" H 1900 6050 60  0001 C CNN
 	1    1900 6050
 	1    0    0    -1  
 $EndComp
-NoConn ~ 3500 5900
 Wire Wire Line
 	3500 5600 3350 5600
 Text GLabel 3350 5600 0    47   Input ~ 0
@@ -805,7 +805,7 @@ Wire Wire Line
 	6600 3350 6150 3350
 Text GLabel 6150 3350 0    50   Output ~ 0
 AnalogV
-Text GLabel 3350 5700 0    50   Output ~ 0
+Text GLabel 3350 5900 0    50   Output ~ 0
 AnalogV
 $Comp
 L tinkerforge:C C4
@@ -904,8 +904,6 @@ Wire Wire Line
 Wire Wire Line
 	3500 3300 3450 3300
 NoConn ~ 3500 6000
-Wire Wire Line
-	3500 5700 3350 5700
 NoConn ~ 3500 6200
 $Comp
 L tinkerforge:phone-jack U7
@@ -923,4 +921,7 @@ Wire Wire Line
 Wire Wire Line
 	9300 1350 9300 2050
 NoConn ~ 10150 1250
+Wire Wire Line
+	3500 5900 3350 5900
+NoConn ~ 3500 5700
 $EndSCHEMATC
