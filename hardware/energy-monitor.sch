@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:energy-monitor-cache
 EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
@@ -861,22 +860,6 @@ F 3 "" H 9300 4300 50  0000 C CNN
 	1    9300 4300
 	1    0    0    -1  
 $EndComp
-$Comp
-L tinkerforge:phone-jack U7
-U 1 1 5C631101
-P 10550 1300
-F 0 "U7" H 10600 1550 50  0000 L CNN
-F 1 "phone-jack" H 10450 1050 50  0000 L CNN
-F 2 "kicad-libraries:SJ-3524-SMT" H 10600 1300 50  0001 C CNN
-F 3 "" H 10600 1300 50  0001 C CNN
-	1    10550 1300
-	1    0    0    -1  
-$EndComp
-NoConn ~ 10150 1350
-Wire Wire Line
-	9300 1250 9300 2050
-Wire Wire Line
-	9300 1250 10150 1250
 Text GLabel 10000 1450 0    50   Input ~ 0
 PlugA
 Text GLabel 10000 3450 0    50   Input ~ 0
@@ -905,7 +888,7 @@ U 1 1 5C6543F0
 P 10750 3350
 F 0 "U8" H 10700 3550 50  0000 L CNN
 F 1 "barrel-plug" H 10550 3150 50  0000 L CNN
-F 2 "kicad-libraries:PJ-036AH-SMT" H 10750 3300 50  0001 C CNN
+F 2 "kicad-libraries:DC-033" H 10750 3300 50  0001 C CNN
 F 3 "" H 10750 3300 50  0001 C CNN
 	1    10750 3350
 	1    0    0    -1  
@@ -924,4 +907,20 @@ NoConn ~ 3500 6000
 Wire Wire Line
 	3500 5700 3350 5700
 NoConn ~ 3500 6200
+$Comp
+L tinkerforge:phone-jack U7
+U 1 1 5CB67694
+P 10550 1300
+F 0 "U7" H 10600 1550 50  0000 L CNN
+F 1 "phone-jack" H 10450 1050 50  0000 L CNN
+F 2 "kicad-libraries:PJ-327C-3" H 10600 1300 50  0001 C CNN
+F 3 "" H 10600 1300 50  0001 C CNN
+	1    10550 1300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	10150 1350 9300 1350
+Wire Wire Line
+	9300 1350 9300 2050
+NoConn ~ 10150 1250
 $EndSCHEMATC
