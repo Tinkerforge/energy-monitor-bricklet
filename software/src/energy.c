@@ -34,6 +34,9 @@
 #include "xmc_wdt.h"
 #include "xmc_math.h"
 
+#define ENERGY_RATIO_CURRENT_DEFAULT 3000
+#define ENERGY_RATIO_VOLTAGE_DEFAULT 1923
+
 #define ENERGY_CROSSINGS_PER_CALCULATON 10
 
 #define energy_adc_irq_handler IRQ_Hdlr_15
@@ -140,8 +143,8 @@ void energy_read_ratio_calibration(void) {
 	// This is either our first startup or something went wrong.
 	// We initialize the calibration data with sane default values.
 	if(page[ENERGY_CALIBRATION_MAGIC_POS] != ENERGY_CALIBRATION_MAGIC) {
-		energy.ratio_current = 3000; 
-		energy.ratio_voltage = 1800;
+		energy.ratio_current = ENERGY_RATIO_CURRENT_DEFAULT;
+		energy.ratio_voltage = ENERGY_RATIO_VOLTAGE_DEFAULT;
 
 		energy_write_ratio_calibration(energy.ratio_current, energy.ratio_voltage);
 
