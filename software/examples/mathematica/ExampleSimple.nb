@@ -1,0 +1,42 @@
+Notebook[{
+ Cell[
+  BoxData[{
+   RowBox[{"Needs", "[", "\"\<NETLink`\>\"", "]"}],
+   RowBox[{"LoadNETAssembly", "[", RowBox[{"\"\<Tinkerforge\>\"", ",", RowBox[{RowBox[{"NotebookDirectory", "[", "]"}], "<>", "\"\<../../..\>\""}]}], "]"}]
+  }], "Input"
+ ],
+ Cell[
+  BoxData[{
+   RowBox[{"host", "=", "\"\<localhost\>\""}],
+   RowBox[{"port", "=", "4223"}],
+   RowBox[{"uid", "=", "\"\<XYZ\>\"", RowBox[{"(*", "Change XYZ to the UID of your Energy Monitor Bricklet", "*)"}]}],
+   RowBox[{"
+"}],
+   RowBox[{"(*", "Create IPConnection and device object", "*)"}],
+   RowBox[{"ipcon", "=", RowBox[{"NETNew", "[", "\"\<Tinkerforge.IPConnection\>\"", "]"}]}],
+   RowBox[{"em", "=", RowBox[{"NETNew", "[", RowBox[{"\"\<Tinkerforge.BrickletEnergyMonitor\>\"", ",", "uid", ",", "ipcon"}], "]"}]}],
+   RowBox[{"ipcon", "@", RowBox[{"Connect", "[", RowBox[{"host", ",", "port"}], "]"}]}],
+   RowBox[{"
+"}],
+   RowBox[{"(*", "Get current Energy Data", "*)"}],
+   RowBox[{"voltage", "=", "0", ";", "current", "=", "0", ";", "energy", "=", "0", ";", "realPower", "=", "0", ";", "apparentPower", "=", "0", ";", "reactivePower", "=", "0", ";", "powerFactor", "=", "0", ";", "frequecy", "=", "0"}],
+   RowBox[{"em", "@", RowBox[{"GetEnergyData", "[", RowBox[{"voltage", ",", "current", ",", "energy", ",", "realPower", ",", "apparentPower", ",", "reactivePower", ",", "powerFactor", ",", "frequecy"}], "]"}]}],
+   RowBox[{"
+"}],
+   RowBox[{"Print", "[", RowBox[{"\"\<Voltage: \>\"", "<>", RowBox[{"ToString", "[", RowBox[{"N", "[", RowBox[{"Quantity", "[", RowBox[{"voltage", ",", "\"\<V/100\>\""}], "]"}], "]"}], "]"}]}], "]"}],
+   RowBox[{"Print", "[", RowBox[{"\"\<Current: \>\"", "<>", RowBox[{"ToString", "[", RowBox[{"N", "[", RowBox[{"Quantity", "[", RowBox[{"current", ",", "\"\<A/100\>\""}], "]"}], "]"}], "]"}]}], "]"}],
+   RowBox[{"Print", "[", RowBox[{"\"\<Energy: \>\"", "<>", RowBox[{"ToString", "[", RowBox[{"N", "[", RowBox[{"Quantity", "[", RowBox[{"energy", ",", "\"\<Wh/100\>\""}], "]"}], "]"}], "]"}]}], "]"}],
+   RowBox[{"Print", "[", RowBox[{"\"\<Real Power: \>\"", "<>", RowBox[{"ToString", "[", RowBox[{"N", "[", RowBox[{"Quantity", "[", RowBox[{"realPower", ",", "\"\<h/100\>\""}], "]"}], "]"}], "]"}]}], "]"}],
+   RowBox[{"Print", "[", RowBox[{"\"\<Apparent Power: \>\"", "<>", RowBox[{"ToString", "[", RowBox[{"N", "[", RowBox[{"Quantity", "[", RowBox[{"apparentPower", ",", "\"\<VA/100\>\""}], "]"}], "]"}], "]"}]}], "]"}],
+   RowBox[{"Print", "[", RowBox[{"\"\<Reactive Power: \>\"", "<>", RowBox[{"ToString", "[", RowBox[{"N", "[", RowBox[{"Quantity", "[", RowBox[{"reactivePower", ",", "\"\<VAR/100\>\""}], "]"}], "]"}], "]"}]}], "]"}],
+   RowBox[{"Print", "[", RowBox[{"\"\<Power Factor: \>\"", "<>", RowBox[{"ToString", "[", RowBox[{"N", "[", RowBox[{"powerFactor", "/", "1000.0"}], "]"}], "]"}]}], "]"}],
+   RowBox[{"Print", "[", RowBox[{"\"\<Frequency: \>\"", "<>", RowBox[{"ToString", "[", RowBox[{"N", "[", RowBox[{"Quantity", "[", RowBox[{"frequecy", ",", "\"\<Hz/100\>\""}], "]"}], "]"}], "]"}]}], "]"}],
+   RowBox[{"
+"}],
+   RowBox[{"(*", "Clean up", "*)"}],
+   RowBox[{"ipcon", "@", RowBox[{"Disconnect", "[", "]"}]}],
+   RowBox[{"ReleaseNETObject", "[", "em", "]"}],
+   RowBox[{"ReleaseNETObject", "[", "ipcon", "]"}]
+  }], "Input"
+ ]
+}]

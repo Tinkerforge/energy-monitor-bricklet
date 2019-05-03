@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <head>
+        <title>Tinkerforge | JavaScript Example</title>
+    </head>
+    <body>
+        <div style="text-align:center;">
+            <h1>Energy Monitor Bricklet Simple Example</h1>
+            <p>
+                <input value="localhost" id="host" type="text" size="20">:
+                <input value="4280" id="port" type="text" size="5">,
+                <input value="uid" id="uid" type="text" size="5">
+                <input value="Start Example" id="start" type="button" onclick="startExample();">
+            </p>
+            <p>
+                <textarea readonly id="text" cols="80" rows="24" style="resize:none;"
+                          >Press "Start Example" to begin ...</textarea>
+            </p>
+        </div>
+        <script src="./Tinkerforge.js" type='text/javascript'></script>
+        <script type='text/javascript'>
+            var ipcon;
+            var textArea = document.getElementById("text");
+            function startExample() {
+                textArea.value = "";
+                var HOST = document.getElementById("host").value;
+                var PORT = parseInt(document.getElementById("port").value);
+                var UID = document.getElementById("uid").value;
+                if(ipcon !== undefined) {
+                    ipcon.disconnect();
+                }
+                ipcon = new Tinkerforge.IPConnection(); // Create IP connection
+                var em = new Tinkerforge.BrickletEnergyMonitor(UID, ipcon); // Create device object
+                ipcon.connect(HOST, PORT,
+                    function(error) {
+                        textArea.value += 'Error: ' + error + '\n';
+                    }
+                ); // Connect to brickd
+                // Don't use device before ipcon is connected
+
+                ipcon.on(Tinkerforge.IPConnection.CALLBACK_CONNECTED,
+                    function (connectReason) {
+                        // Get current Energy Data
+                        em.getEnergyData(
+                            function (voltage, current, energy, realPower, apparentPower, reactivePower, powerFactor, frequecy) {
+                                textArea.value += 'Voltage: ' + voltage/100.0 + ' V\n';
+                                textArea.value += 'Current: ' + current/100.0 + ' A\n';
+                                textArea.value += 'Energy: ' + energy/100.0 + ' Wh\n';
+                                textArea.value += 'Real Power: ' + realPower/100.0 + ' h\n';
+                                textArea.value += 'Apparent Power: ' + apparentPower/100.0 + ' VA\n';
+                                textArea.value += 'Reactive Power: ' + reactivePower/100.0 + ' VAR\n';
+                                textArea.value += 'Power Factor: ' + powerFactor/1000.0 + '\n';
+                                textArea.value += 'Frequency: ' + frequecy/100.0 + ' Hz\n';
+                            },
+                            function (error) {
+                                textArea.value += 'Error: ' + error + '\n';
+                            }
+                        );
+                    }
+                );
+            }
+        </script>
+    </body>
+</html>

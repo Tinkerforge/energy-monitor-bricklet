@@ -1,0 +1,37 @@
+Needs["NETLink`"]
+LoadNETAssembly["Tinkerforge",NotebookDirectory[]<>"../../.."]
+
+host="localhost"
+port=4223
+uid="XYZ"(*Change XYZ to the UID of your Energy Monitor Bricklet*)
+
+(*Create IPConnection and device object*)
+ipcon=NETNew["Tinkerforge.IPConnection"]
+em=NETNew["Tinkerforge.BrickletEnergyMonitor",uid,ipcon]
+ipcon@Connect[host,port]
+
+(*Callback function for Energy Data callback*)
+EnergyDataCB[sender_,voltage_,current_,energy_,realPower_,apparentPower_,reactivePower_,
+             powerFactor_,frequecy_]:=
+ Module[{},
+  Print["Voltage: "<>ToString[N[Quantity[voltage,"V/100"]]]];
+  Print["Current: "<>ToString[N[Quantity[current,"A/100"]]]];
+  Print["Energy: "<>ToString[N[Quantity[energy,"Wh/100"]]]];
+  Print["Real Power: "<>ToString[N[Quantity[realPower,"h/100"]]]];
+  Print["Apparent Power: "<>ToString[N[Quantity[apparentPower,"VA/100"]]]];
+  Print["Reactive Power: "<>ToString[N[Quantity[reactivePower,"VAR/100"]]]];
+  Print["Power Factor: "<>ToString[N[powerFactor/1000.0]]];
+  Print["Frequency: "<>ToString[N[Quantity[frequecy,"Hz/100"]]]]
+ ]
+
+AddEventHandler[em@EnergyDataCallback,EnergyDataCB]
+
+(*Set period for Energy Data callback to 1s (1000ms)*)
+em@SetEnergyDataCallbackConfiguration[1000,False]
+
+Input["Click OK to exit"]
+
+(*Clean up*)
+ipcon@Disconnect[]
+ReleaseNETObject[em]
+ReleaseNETObject[ipcon]

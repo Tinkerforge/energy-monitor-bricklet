@@ -1,0 +1,6 @@
+# Change XYZ to the UID of your Energy Monitor Bricklet
+
+setup:
+	# Get current Energy Data
+	subscribe to tinkerforge/response/energy_monitor_bricklet/XYZ/get_energy_data
+	publish '' to tinkerforge/request/energy_monitor_bricklet/XYZ/get_energy_data
