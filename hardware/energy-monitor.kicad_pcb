@@ -21,7 +21,7 @@
 
   (layers
     (0 F.Cu signal)
-    (31 B.Cu signal)
+    (31 B.Cu signal hide)
     (32 B.Adhes user)
     (33 F.Adhes user)
     (34 B.Paste user)
@@ -199,6 +199,7 @@
   (module kicad-libraries:PJ-327C-3 (layer F.Cu) (tedit 5CD4020F) (tstamp 5CB68745)
     (at 177.5 93.85 180)
     (path /5CB67694)
+    (attr smd)
     (fp_text reference U7 (at 5.7 2 180) (layer F.Fab)
       (effects (font (size 1 1) (thickness 0.15)))
     )
@@ -227,6 +228,7 @@
   (module kicad-libraries:DC-033 (layer F.Cu) (tedit 5CC705D6) (tstamp 5CC70F43)
     (at 180 76.6 180)
     (path /5C6543F0)
+    (attr smd)
     (fp_text reference U8 (at 5 1.6 180) (layer F.Fab)
       (effects (font (size 1 1) (thickness 0.15)))
     )
