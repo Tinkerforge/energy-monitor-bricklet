@@ -223,6 +223,11 @@
     (pad NC smd rect (at 4.8 -3.375 180) (size 1.8 2.75) (layers F.Cu F.Paste F.Mask))
     (pad "" np_thru_hole circle (at 8.5 0 180) (size 1.6 1.6) (drill 1.6) (layers *.Cu *.Mask))
     (pad "" np_thru_hole circle (at 2.5 0 180) (size 1.6 1.6) (drill 1.6) (layers *.Cu *.Mask))
+    (model Connectors/PJ-327C-3.step
+      (at (xyz 0 0 0))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 0))
+    )
   )
 
   (module kicad-libraries:DC-033 (layer F.Cu) (tedit 5CC705D6) (tstamp 5CC70F43)
@@ -249,6 +254,11 @@
       (net 25 "Net-(R11-Pad1)"))
     (pad "" np_thru_hole circle (at 6.5 0 180) (size 1 1) (drill 1) (layers *.Cu *.Mask))
     (pad "" np_thru_hole circle (at 1.5 0 180) (size 1 1) (drill 1) (layers *.Cu *.Mask))
+    (model Connectors/DC-033.wrl
+      (at (xyz 0 0 0))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 0))
+    )
   )
 
   (module kicad-libraries:C0805 (layer F.Cu) (tedit 58F5DFFC) (tstamp 5C6327B4)
