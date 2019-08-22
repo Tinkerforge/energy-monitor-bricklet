@@ -1,5 +1,4 @@
-use std::thread;
-use std::{error::Error, io};
+use std::{error::Error, io, thread};
 use tinkerforge::{energy_monitor_bricklet::*, ip_connection::IpConnection};
 
 const HOST: &str = "localhost";
