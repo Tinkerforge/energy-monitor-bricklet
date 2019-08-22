@@ -43,7 +43,7 @@ int main(void) {
 	// Register Energy Data callback to function cb_energy_data
 	energy_monitor_register_callback(&em,
 	                                 ENERGY_MONITOR_CALLBACK_ENERGY_DATA,
-	                                 (void *)cb_energy_data,
+	                                 (void (*)(void))cb_energy_data,
 	                                 NULL);
 
 	// Set period for Energy Data callback to 1s (1000ms)
