@@ -26,7 +26,7 @@ echo "Real Power: " . $energy_data['real_power']/100.0 . " h\n";
 echo "Apparent Power: " . $energy_data['apparent_power']/100.0 . " VA\n";
 echo "Reactive Power: " . $energy_data['reactive_power']/100.0 . " VAR\n";
 echo "Power Factor: " . $energy_data['power_factor']/1000.0 . "\n";
-echo "Frequency: " . $energy_data['frequecy']/100.0 . " Hz\n";
+echo "Frequency: " . $energy_data['frequency']/100.0 . " Hz\n";
 
 echo "Press key to exit\n";
 fgetc(fopen('php://stdin', 'r'));

@@ -28,7 +28,7 @@ public class ExampleSimple {
 		System.out.println("Apparent Power: " + energyData.apparentPower/100.0 + " VA");
 		System.out.println("Reactive Power: " + energyData.reactivePower/100.0 + " VAR");
 		System.out.println("Power Factor: " + energyData.powerFactor/1000.0);
-		System.out.println("Frequency: " + energyData.frequecy/100.0 + " Hz");
+		System.out.println("Frequency: " + energyData.frequency/100.0 + " Hz");
 
 		System.out.println("Press key to exit"); System.in.read();
 		ipcon.disconnect();

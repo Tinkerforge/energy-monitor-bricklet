@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     # Get current Energy Data
     voltage, current, energy, real_power, apparent_power, reactive_power, power_factor, \
-      frequecy = em.get_energy_data()
+      frequency = em.get_energy_data()
 
     print("Voltage: " + str(voltage/100.0) + " V")
     print("Current: " + str(current/100.0) + " A")
@@ -26,7 +26,7 @@ if __name__ == "__main__":
     print("Apparent Power: " + str(apparent_power/100.0) + " VA")
     print("Reactive Power: " + str(reactive_power/100.0) + " VAR")
     print("Power Factor: " + str(power_factor/1000.0))
-    print("Frequency: " + str(frequecy/100.0) + " Hz")
+    print("Frequency: " + str(frequency/100.0) + " Hz")
 
     raw_input("Press key to exit\n") # Use input() in Python 3
     ipcon.disconnect()

@@ -10,7 +10,7 @@ from tinkerforge.bricklet_energy_monitor import BrickletEnergyMonitor
 
 # Callback function for Energy Data callback
 def cb_energy_data(voltage, current, energy, real_power, apparent_power, reactive_power,
-                   power_factor, frequecy):
+                   power_factor, frequency):
     print("Voltage: " + str(voltage/100.0) + " V")
     print("Current: " + str(current/100.0) + " A")
     print("Energy: " + str(energy/100.0) + " Wh")
@@ -18,7 +18,7 @@ def cb_energy_data(voltage, current, energy, real_power, apparent_power, reactiv
     print("Apparent Power: " + str(apparent_power/100.0) + " VA")
     print("Reactive Power: " + str(reactive_power/100.0) + " VAR")
     print("Power Factor: " + str(power_factor/1000.0))
-    print("Frequency: " + str(frequecy/100.0) + " Hz")
+    print("Frequency: " + str(frequency/100.0) + " Hz")
     print("")
 
 if __name__ == "__main__":

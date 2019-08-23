@@ -50,7 +50,7 @@
                 em.on(Tinkerforge.BrickletEnergyMonitor.CALLBACK_ENERGY_DATA,
                     // Callback function for Energy Data callback
                     function (voltage, current, energy, realPower, apparentPower, reactivePower,
-                              powerFactor, frequecy) {
+                              powerFactor, frequency) {
                         textArea.value += 'Voltage: ' + voltage/100.0 + ' V\n';
                         textArea.value += 'Current: ' + current/100.0 + ' A\n';
                         textArea.value += 'Energy: ' + energy/100.0 + ' Wh\n';
@@ -58,7 +58,7 @@
                         textArea.value += 'Apparent Power: ' + apparentPower/100.0 + ' VA\n';
                         textArea.value += 'Reactive Power: ' + reactivePower/100.0 + ' VAR\n';
                         textArea.value += 'Power Factor: ' + powerFactor/1000.0 + '\n';
-                        textArea.value += 'Frequency: ' + frequecy/100.0 + ' Hz\n';
+                        textArea.value += 'Frequency: ' + frequency/100.0 + ' Hz\n';
                         textArea.value += '\n';
                         textArea.scrollTop = textArea.scrollHeight;
                     }

@@ -25,10 +25,10 @@ int main(void) {
 
 	// Get current Energy Data
 	int32_t voltage, current, energy, real_power, apparent_power, reactive_power;
-	uint16_t power_factor, frequecy;
+	uint16_t power_factor, frequency;
 	if(energy_monitor_get_energy_data(&em, &voltage, &current, &energy, &real_power,
 	                                  &apparent_power, &reactive_power, &power_factor,
-	                                  &frequecy) < 0) {
+	                                  &frequency) < 0) {
 		fprintf(stderr, "Could not get Energy Data, probably timeout\n");
 		return 1;
 	}
@@ -40,7 +40,7 @@ int main(void) {
 	printf("Apparent Power: %f VA\n", apparent_power/100.0);
 	printf("Reactive Power: %f VAR\n", reactive_power/100.0);
 	printf("Power Factor: %f\n", power_factor/1000.0);
-	printf("Frequency: %f Hz\n", frequecy/100.0);
+	printf("Frequency: %f Hz\n", frequency/100.0);
 
 	printf("Press key to exit\n");
 	getchar();

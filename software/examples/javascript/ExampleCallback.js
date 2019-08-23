@@ -25,7 +25,7 @@ ipcon.on(Tinkerforge.IPConnection.CALLBACK_CONNECTED,
 em.on(Tinkerforge.BrickletEnergyMonitor.CALLBACK_ENERGY_DATA,
     // Callback function for Energy Data callback
     function (voltage, current, energy, realPower, apparentPower, reactivePower,
-              powerFactor, frequecy) {
+              powerFactor, frequency) {
         console.log('Voltage: ' + voltage/100.0 + ' V');
         console.log('Current: ' + current/100.0 + ' A');
         console.log('Energy: ' + energy/100.0 + ' Wh');
@@ -33,7 +33,7 @@ em.on(Tinkerforge.BrickletEnergyMonitor.CALLBACK_ENERGY_DATA,
         console.log('Apparent Power: ' + apparentPower/100.0 + ' VA');
         console.log('Reactive Power: ' + reactivePower/100.0 + ' VAR');
         console.log('Power Factor: ' + powerFactor/1000.0);
-        console.log('Frequency: ' + frequecy/100.0 + ' Hz');
+        console.log('Frequency: ' + frequency/100.0 + ' Hz');
         console.log();
     }
 );

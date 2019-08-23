@@ -21,7 +21,7 @@ function octave_example_simple()
     fprintf("Apparent Power: %g VA\n", energyData.apparentPower/100.0);
     fprintf("Reactive Power: %g VAR\n", energyData.reactivePower/100.0);
     fprintf("Power Factor: %g\n", energyData.powerFactor/1000.0);
-    fprintf("Frequency: %g Hz\n", energyData.frequecy/100.0);
+    fprintf("Frequency: %g Hz\n", energyData.frequency/100.0);
 
     input("Press key to exit\n", "s");
     ipcon.disconnect();

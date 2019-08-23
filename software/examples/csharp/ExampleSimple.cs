@@ -17,10 +17,10 @@ class Example
 
 		// Get current Energy Data
 		int voltage, current, energy, realPower, apparentPower, reactivePower,
-		    powerFactor, frequecy;
+		    powerFactor, frequency;
 		em.GetEnergyData(out voltage, out current, out energy, out realPower,
 		                 out apparentPower, out reactivePower, out powerFactor,
-		                 out frequecy);
+		                 out frequency);
 
 		Console.WriteLine("Voltage: " + voltage/100.0 + " V");
 		Console.WriteLine("Current: " + current/100.0 + " A");
@@ -29,7 +29,7 @@ class Example
 		Console.WriteLine("Apparent Power: " + apparentPower/100.0 + " VA");
 		Console.WriteLine("Reactive Power: " + reactivePower/100.0 + " VAR");
 		Console.WriteLine("Power Factor: " + powerFactor/1000.0);
-		Console.WriteLine("Frequency: " + frequecy/100.0 + " Hz");
+		Console.WriteLine("Frequency: " + frequency/100.0 + " Hz");
 
 		Console.WriteLine("Press enter to exit");
 		Console.ReadLine();

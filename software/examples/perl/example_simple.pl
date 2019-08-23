@@ -16,7 +16,7 @@ $ipcon->connect(&HOST, &PORT); # Connect to brickd
 
 # Get current Energy Data
 my ($voltage, $current, $energy, $real_power, $apparent_power, $reactive_power,
-    $power_factor, $frequecy) = $em->get_energy_data();
+    $power_factor, $frequency) = $em->get_energy_data();
 
 print "Voltage: " . $voltage/100.0 . " V\n";
 print "Current: " . $current/100.0 . " A\n";
@@ -25,7 +25,7 @@ print "Real Power: " . $real_power/100.0 . " h\n";
 print "Apparent Power: " . $apparent_power/100.0 . " VA\n";
 print "Reactive Power: " . $reactive_power/100.0 . " VAR\n";
 print "Power Factor: " . $power_factor/1000.0 . "\n";
-print "Frequency: " . $frequecy/100.0 . " Hz\n";
+print "Frequency: " . $frequency/100.0 . " Hz\n";
 
 print "Press key to exit\n";
 <STDIN>;

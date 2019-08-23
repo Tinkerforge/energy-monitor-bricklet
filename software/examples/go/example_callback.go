@@ -18,7 +18,7 @@ func main() {
 	defer ipcon.Disconnect()
 	// Don't use device before ipcon is connected.
 
-	em.RegisterEnergyDataCallback(func(voltage int32, current int32, energy int32, realPower int32, apparentPower int32, reactivePower int32, powerFactor uint16, frequecy uint16) {
+	em.RegisterEnergyDataCallback(func(voltage int32, current int32, energy int32, realPower int32, apparentPower int32, reactivePower int32, powerFactor uint16, frequency uint16) {
 		fmt.Printf("Voltage: %f V\n", float64(voltage)/100.0)
 		fmt.Printf("Current: %f A\n", float64(current)/100.0)
 		fmt.Printf("Energy: %f Wh\n", float64(energy)/100.0)
@@ -26,7 +26,7 @@ func main() {
 		fmt.Printf("Apparent Power: %f VA\n", float64(apparentPower)/100.0)
 		fmt.Printf("Reactive Power: %f VAR\n", float64(reactivePower)/100.0)
 		fmt.Printf("Power Factor: %f\n", float64(powerFactor)/1000.0)
-		fmt.Printf("Frequency: %f Hz\n", float64(frequecy)/100.0)
+		fmt.Printf("Frequency: %f Hz\n", float64(frequency)/100.0)
 		fmt.Println()
 	})
 

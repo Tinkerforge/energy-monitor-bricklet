@@ -17,7 +17,7 @@ ipcon.connect HOST, PORT # Connect to brickd
 # Don't use device before ipcon is connected
 
 # Get current Energy Data as [voltage, current, energy, real_power, apparent_power,
-#                             reactive_power, power_factor, frequecy]
+#                             reactive_power, power_factor, frequency]
 energy_data = em.get_energy_data
 
 puts "Voltage: #{energy_data[0]/100.0} V"

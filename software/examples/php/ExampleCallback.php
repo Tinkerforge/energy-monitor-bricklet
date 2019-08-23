@@ -12,7 +12,7 @@ const UID = 'XYZ'; // Change XYZ to the UID of your Energy Monitor Bricklet
 
 // Callback function for Energy Data callback
 function cb_energyData($voltage, $current, $energy, $real_power, $apparent_power,
-                       $reactive_power, $power_factor, $frequecy)
+                       $reactive_power, $power_factor, $frequency)
 {
     echo "Voltage: " . $voltage/100.0 . " V\n";
     echo "Current: " . $current/100.0 . " A\n";
@@ -21,7 +21,7 @@ function cb_energyData($voltage, $current, $energy, $real_power, $apparent_power
     echo "Apparent Power: " . $apparent_power/100.0 . " VA\n";
     echo "Reactive Power: " . $reactive_power/100.0 . " VAR\n";
     echo "Power Factor: " . $power_factor/1000.0 . "\n";
-    echo "Frequency: " . $frequecy/100.0 . " Hz\n";
+    echo "Frequency: " . $frequency/100.0 . " Hz\n";
     echo "\n";
 }
 

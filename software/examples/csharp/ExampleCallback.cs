@@ -10,7 +10,7 @@ class Example
 	// Callback function for Energy Data callback
 	static void EnergyDataCB(BrickletEnergyMonitor sender, int voltage, int current,
 	                         int energy, int realPower, int apparentPower,
-	                         int reactivePower, int powerFactor, int frequecy)
+	                         int reactivePower, int powerFactor, int frequency)
 	{
 		Console.WriteLine("Voltage: " + voltage/100.0 + " V");
 		Console.WriteLine("Current: " + current/100.0 + " A");
@@ -19,7 +19,7 @@ class Example
 		Console.WriteLine("Apparent Power: " + apparentPower/100.0 + " VA");
 		Console.WriteLine("Reactive Power: " + reactivePower/100.0 + " VAR");
 		Console.WriteLine("Power Factor: " + powerFactor/1000.0);
-		Console.WriteLine("Frequency: " + frequecy/100.0 + " Hz");
+		Console.WriteLine("Frequency: " + frequency/100.0 + " Hz");
 		Console.WriteLine("");
 	}
 

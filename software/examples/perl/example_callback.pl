@@ -12,7 +12,7 @@ use constant UID => 'XYZ'; # Change XYZ to the UID of your Energy Monitor Brickl
 sub cb_energy_data
 {
     my ($voltage, $current, $energy, $real_power, $apparent_power, $reactive_power,
-        $power_factor, $frequecy) = @_;
+        $power_factor, $frequency) = @_;
 
     print "Voltage: " . $voltage/100.0 . " V\n";
     print "Current: " . $current/100.0 . " A\n";
@@ -21,7 +21,7 @@ sub cb_energy_data
     print "Apparent Power: " . $apparent_power/100.0 . " VA\n";
     print "Reactive Power: " . $reactive_power/100.0 . " VAR\n";
     print "Power Factor: " . $power_factor/1000.0 . "\n";
-    print "Frequency: " . $frequecy/100.0 . " Hz\n";
+    print "Frequency: " . $frequency/100.0 . " Hz\n";
     print "\n";
 }
 

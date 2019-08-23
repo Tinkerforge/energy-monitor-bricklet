@@ -26,7 +26,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             println!("Apparent Power: {} VA", energy_data.apparent_power as f32 / 100.0);
             println!("Reactive Power: {} VAR", energy_data.reactive_power as f32 / 100.0);
             println!("Power Factor: {}", energy_data.power_factor as f32 / 1000.0);
-            println!("Frequency: {} Hz", energy_data.frequecy as f32 / 100.0);
+            println!("Frequency: {} Hz", energy_data.frequency as f32 / 100.0);
             println!();
         }
     });

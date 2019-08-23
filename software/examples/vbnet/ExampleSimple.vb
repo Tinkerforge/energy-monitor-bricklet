@@ -15,10 +15,10 @@ Module ExampleSimple
 
         ' Get current Energy Data
         Dim voltage, current, energy, realPower, apparentPower, reactivePower,
-            powerFactor, frequecy As Integer
+            powerFactor, frequency As Integer
 
         em.GetEnergyData(voltage, current, energy, realPower, apparentPower, _
-                         reactivePower, powerFactor, frequecy)
+                         reactivePower, powerFactor, frequency)
 
         Console.WriteLine("Voltage: " + (voltage/100.0).ToString() + " V")
         Console.WriteLine("Current: " + (current/100.0).ToString() + " A")
@@ -27,7 +27,7 @@ Module ExampleSimple
         Console.WriteLine("Apparent Power: " + (apparentPower/100.0).ToString() + " VA")
         Console.WriteLine("Reactive Power: " + (reactivePower/100.0).ToString() + " VAR")
         Console.WriteLine("Power Factor: " + (powerFactor/1000.0).ToString())
-        Console.WriteLine("Frequency: " + (frequecy/100.0).ToString() + " Hz")
+        Console.WriteLine("Frequency: " + (frequency/100.0).ToString() + " Hz")
 
         Console.WriteLine("Press key to exit")
         Console.ReadLine()

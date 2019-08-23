@@ -16,7 +16,7 @@ type
                            const current: longint; const energy: longint;
                            const realPower: longint; const apparentPower: longint;
                            const reactivePower: longint; const powerFactor: word;
-                           const frequecy: word);
+                           const frequency: word);
     procedure Execute;
   end;
 
@@ -33,7 +33,7 @@ procedure TExample.EnergyDataCB(sender: TBrickletEnergyMonitor; const voltage: l
                                 const current: longint; const energy: longint;
                                 const realPower: longint; const apparentPower: longint;
                                 const reactivePower: longint; const powerFactor: word;
-                                const frequecy: word);
+                                const frequency: word);
 begin
   WriteLn(Format('Voltage: %f V', [voltage/100.0]));
   WriteLn(Format('Current: %f A', [current/100.0]));
@@ -42,7 +42,7 @@ begin
   WriteLn(Format('Apparent Power: %f VA', [apparentPower/100.0]));
   WriteLn(Format('Reactive Power: %f VAR', [reactivePower/100.0]));
   WriteLn(Format('Power Factor: %f', [powerFactor/1000.0]));
-  WriteLn(Format('Frequency: %f Hz', [frequecy/100.0]));
+  WriteLn(Format('Frequency: %f Hz', [frequency/100.0]));
   WriteLn('');
 end;
 

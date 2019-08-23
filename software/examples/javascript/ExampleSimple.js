@@ -18,7 +18,7 @@ ipcon.on(Tinkerforge.IPConnection.CALLBACK_CONNECTED,
     function (connectReason) {
         // Get current Energy Data
         em.getEnergyData(
-            function (voltage, current, energy, realPower, apparentPower, reactivePower, powerFactor, frequecy) {
+            function (voltage, current, energy, realPower, apparentPower, reactivePower, powerFactor, frequency) {
                 console.log('Voltage: ' + voltage/100.0 + ' V');
                 console.log('Current: ' + current/100.0 + ' A');
                 console.log('Energy: ' + energy/100.0 + ' Wh');
@@ -26,7 +26,7 @@ ipcon.on(Tinkerforge.IPConnection.CALLBACK_CONNECTED,
                 console.log('Apparent Power: ' + apparentPower/100.0 + ' VA');
                 console.log('Reactive Power: ' + reactivePower/100.0 + ' VAR');
                 console.log('Power Factor: ' + powerFactor/1000.0);
-                console.log('Frequency: ' + frequecy/100.0 + ' Hz');
+                console.log('Frequency: ' + frequency/100.0 + ' Hz');
             },
             function (error) {
                 console.log('Error: ' + error);

@@ -11,8 +11,8 @@ em=NETNew["Tinkerforge.BrickletEnergyMonitor",uid,ipcon]
 ipcon@Connect[host,port]
 
 (*Get current Energy Data*)
-voltage=0;current=0;energy=0;realPower=0;apparentPower=0;reactivePower=0;powerFactor=0;frequecy=0
-em@GetEnergyData[voltage,current,energy,realPower,apparentPower,reactivePower,powerFactor,frequecy]
+voltage=0;current=0;energy=0;realPower=0;apparentPower=0;reactivePower=0;powerFactor=0;frequency=0
+em@GetEnergyData[voltage,current,energy,realPower,apparentPower,reactivePower,powerFactor,frequency]
 
 Print["Voltage: "<>ToString[N[Quantity[voltage,"V/100"]]]]
 Print["Current: "<>ToString[N[Quantity[current,"A/100"]]]]
@@ -21,7 +21,7 @@ Print["Real Power: "<>ToString[N[Quantity[realPower,"h/100"]]]]
 Print["Apparent Power: "<>ToString[N[Quantity[apparentPower,"VA/100"]]]]
 Print["Reactive Power: "<>ToString[N[Quantity[reactivePower,"VAR/100"]]]]
 Print["Power Factor: "<>ToString[N[powerFactor/1000.0]]]
-Print["Frequency: "<>ToString[N[Quantity[frequecy,"Hz/100"]]]]
+Print["Frequency: "<>ToString[N[Quantity[frequency,"Hz/100"]]]]
 
 (*Clean up*)
 ipcon@Disconnect[]

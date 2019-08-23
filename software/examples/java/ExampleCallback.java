@@ -21,7 +21,7 @@ public class ExampleCallback {
 		em.addEnergyDataListener(new BrickletEnergyMonitor.EnergyDataListener() {
 			public void energyData(int voltage, int current, int energy, int realPower,
 			                       int apparentPower, int reactivePower, int powerFactor,
-			                       int frequecy) {
+			                       int frequency) {
 				System.out.println("Voltage: " + voltage/100.0 + " V");
 				System.out.println("Current: " + current/100.0 + " A");
 				System.out.println("Energy: " + energy/100.0 + " Wh");
@@ -29,7 +29,7 @@ public class ExampleCallback {
 				System.out.println("Apparent Power: " + apparentPower/100.0 + " VA");
 				System.out.println("Reactive Power: " + reactivePower/100.0 + " VAR");
 				System.out.println("Power Factor: " + powerFactor/1000.0);
-				System.out.println("Frequency: " + frequecy/100.0 + " Hz");
+				System.out.println("Frequency: " + frequency/100.0 + " Hz");
 				System.out.println("");
 			}
 		});

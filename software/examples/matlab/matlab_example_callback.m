@@ -31,6 +31,6 @@ function cb_energy_data(e)
     fprintf('Apparent Power: %g VA\n', e.apparentPower/100.0);
     fprintf('Reactive Power: %g VAR\n', e.reactivePower/100.0);
     fprintf('Power Factor: %g\n', e.powerFactor/1000.0);
-    fprintf('Frequency: %g Hz\n', e.frequecy/100.0);
+    fprintf('Frequency: %g Hz\n', e.frequency/100.0);
     fprintf('\n');
 end

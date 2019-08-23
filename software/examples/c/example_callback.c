@@ -10,7 +10,7 @@
 // Callback function for Energy Data callback
 void cb_energy_data(int32_t voltage, int32_t current, int32_t energy, int32_t real_power,
                     int32_t apparent_power, int32_t reactive_power, uint16_t power_factor,
-                    uint16_t frequecy, void *user_data) {
+                    uint16_t frequency, void *user_data) {
 	(void)user_data; // avoid unused parameter warning
 
 	printf("Voltage: %f V\n", voltage/100.0);
@@ -20,7 +20,7 @@ void cb_energy_data(int32_t voltage, int32_t current, int32_t energy, int32_t re
 	printf("Apparent Power: %f VA\n", apparent_power/100.0);
 	printf("Reactive Power: %f VAR\n", reactive_power/100.0);
 	printf("Power Factor: %f\n", power_factor/1000.0);
-	printf("Frequency: %f Hz\n", frequecy/100.0);
+	printf("Frequency: %f Hz\n", frequency/100.0);
 	printf("\n");
 }
 

@@ -25,7 +25,7 @@ var
 
 procedure TExample.Execute;
 var voltage, current, energy, realPower, apparentPower, reactivePower: longint;
-    powerFactor, frequecy: word;
+    powerFactor, frequency: word;
 begin
   { Create IP connection }
   ipcon := TIPConnection.Create;
@@ -39,7 +39,7 @@ begin
 
   { Get current Energy Data }
   em.GetEnergyData(voltage, current, energy, realPower, apparentPower, reactivePower,
-                   powerFactor, frequecy);
+                   powerFactor, frequency);
 
   WriteLn(Format('Voltage: %f V', [voltage/100.0]));
   WriteLn(Format('Current: %f A', [current/100.0]));
@@ -48,7 +48,7 @@ begin
   WriteLn(Format('Apparent Power: %f VA', [apparentPower/100.0]));
   WriteLn(Format('Reactive Power: %f VAR', [reactivePower/100.0]));
   WriteLn(Format('Power Factor: %f', [powerFactor/1000.0]));
-  WriteLn(Format('Frequency: %f Hz', [frequecy/100.0]));
+  WriteLn(Format('Frequency: %f Hz', [frequency/100.0]));
 
   WriteLn('Press key to exit');
   ReadLn;
