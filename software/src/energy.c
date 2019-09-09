@@ -164,7 +164,7 @@ void energy_tick_voltage_and_current(const int32_t v_adc_ac, const int32_t a_adc
 	energy.adc_w_sum         += v_adc_ac*a_adc_ac;
 	energy.sum_count++;
 
-	// We assume that we cross the zero point if the last measrued value was negative and the new one is positive.
+	// We assume that we cross the zero point if the last measured value was negative and the new one is positive.
 	// Additionally we wait for at least 50 measurements, to make sure that we don't have false-positives because
 	// of noise in the data.
 	energy.crossings_count++;
@@ -261,7 +261,7 @@ void energy_tick_voltage(const int32_t v_adc_ac) {
 	energy.adc_v_squared_sum += v_adc_ac*v_adc_ac;
 	energy.sum_count++;
 
-	// We assume that we cross the zero point if the last measrued value was negative and the new one is positive.
+	// We assume that we cross the zero point if the last measured value was negative and the new one is positive.
 	// Additionally we wait for at least 50 measurements, to make sure that we don't have false-positives because
 	// of noise in the data.
 	energy.crossings_count++;
@@ -320,7 +320,7 @@ void energy_tick_current(const int32_t a_adc_ac) {
 	energy.adc_a_squared_sum += a_adc_ac*a_adc_ac;
 	energy.sum_count++;
 
-	// We assume that we cross the zero point if the last measrued value was negative and the new one is positive.
+	// We assume that we cross the zero point if the last measured value was negative and the new one is positive.
 	// Additionally we wait for at least 50 measurements, to make sure that we don't have false-positives because
 	// of noise in the data.
 	energy.crossings_count++;
