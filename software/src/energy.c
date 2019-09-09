@@ -38,6 +38,7 @@
 #define ENERGY_RATIO_VOLTAGE_DEFAULT 1923
 
 #define ENERGY_CROSSINGS_PER_CALCULATON 10
+#define ENERGY_NO_WAVEFORM_THRESHOLD    3000
 
 #define energy_adc_irq_handler IRQ_Hdlr_15
 
@@ -254,6 +255,19 @@ void energy_tick_voltage_and_current(const int32_t v_adc_ac, const int32_t a_adc
 		energy.sum_count = 0;
 		energy.crossings = 0;
 	}
+
+	// If we don't see any crossings for a long time (3000 crossings_count is about 1/4 of a second)
+	// we assume that there is no current flowing at all and set everything to 0.
+	if(energy.crossings_count > ENERGY_NO_WAVEFORM_THRESHOLD) {
+		energy.voltage        = 0;
+		energy.current        = 0;
+		energy.real_power     = 0;
+		energy.apparent_power = 0;
+		energy.reactive_power = 0;
+		energy.power_factor   = 0;
+		energy.energy         = 0;
+		energy.frequency      = 0;
+	}
 }
 
 void energy_tick_voltage(const int32_t v_adc_ac) {
@@ -312,6 +326,13 @@ void energy_tick_voltage(const int32_t v_adc_ac) {
 		energy.adc_w_sum = 0;
 		energy.sum_count = 0;
 		energy.crossings = 0;
+	}
+
+	// If we don't see any crossings for a long time (3000 crossings_count is about 1/4 of a second)
+	// we assume that there is no current flowing at all and set everything to 0.
+	if(energy.crossings_count > ENERGY_NO_WAVEFORM_THRESHOLD) {
+		energy.voltage   = 0;
+		energy.frequency = 0;
 	}
 }
 
@@ -372,6 +393,13 @@ void energy_tick_current(const int32_t a_adc_ac) {
 		energy.adc_w_sum = 0;
 		energy.sum_count = 0;
 		energy.crossings = 0;
+	}
+
+	// If we don't see any crossings for a long time (3000 crossings_count is about 1/4 of a second)
+	// we assume that there is no current flowing at all and set everything to 0.
+	if(energy.crossings_count > ENERGY_NO_WAVEFORM_THRESHOLD) {
+		energy.current   = 0;
+		energy.frequency = 0;
 	}
 }
 

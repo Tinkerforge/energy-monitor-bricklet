@@ -1,2 +1,5 @@
 2019-08-14: 2.0.0 (1ad2e89)
 - Initial version
+
+2019-09-09: 2.0.1 (TBD)
+- Show voltage and current of 0 if the waveform has no zero-crossings 
