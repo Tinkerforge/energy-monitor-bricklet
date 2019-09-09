@@ -350,7 +350,6 @@ void energy_tick_current(const int32_t a_adc_ac) {
 	// We calculate new values every ENERGY_CROSSINGS_PER_CALCULATON crossings.
 	// A crossing here is the low to high zero-crossing of the sinusoidal voltage
 	if(energy.crossings >= ENERGY_CROSSINGS_PER_CALCULATON) {
-		XMC_GPIO_SetOutputHigh(P1_1);
 		// Calculate current RMS
 		// 330*68*ratio_a/(4*4095*91*100) (mA)  => ratio_a*187/1242150
 		if(energy.sum_count == 0) {
@@ -636,12 +635,6 @@ void energy_init(void) {
 		.mode = XMC_GPIO_MODE_INPUT_PULL_UP,
 		.input_hysteresis = XMC_GPIO_INPUT_HYSTERESIS_STANDARD
 	};
-
-	XMC_GPIO_CONFIG_t output = {
-		.mode = XMC_GPIO_MODE_OUTPUT_PUSH_PULL,
-		.output_level = XMC_GPIO_OUTPUT_LEVEL_HIGH
-	};
-	XMC_GPIO_Init(P1_1, &output);
 
 	XMC_GPIO_Init(ENERGY_A_ADC_PIN, &input);
 	XMC_GPIO_Init(ENERGY_V_ADC_PIN, &input);
