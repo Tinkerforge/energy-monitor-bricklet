@@ -34,5 +34,5 @@ if __name__ == "__main__":
     # Set period for Energy Data callback to 1s (1000ms)
     em.set_energy_data_callback_configuration(1000, False)
 
-    raw_input("Press key to exit\n") # Use input() in Python 3
+    input("Press key to exit\n") # Use raw_input() in Python 2
     ipcon.disconnect()
