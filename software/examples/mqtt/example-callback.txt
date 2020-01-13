@@ -4,6 +4,6 @@ setup:
 	# Handle incoming Energy Data callbacks
 	subscribe to tinkerforge/callback/energy_monitor_bricklet/XYZ/energy_data
 	publish '{"register": true}' to tinkerforge/register/energy_monitor_bricklet/XYZ/energy_data # Register energy_data callback
-	
+
 	# Set period for Energy Data callback to 1s (1000ms)
 	publish '{"period": 1000, "value_has_to_change": false}' to tinkerforge/request/energy_monitor_bricklet/XYZ/set_energy_data_callback_configuration
