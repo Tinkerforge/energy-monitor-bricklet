@@ -25,7 +25,7 @@ puts "Current: #{energy_data[1]/100.0} A"
 puts "Energy: #{energy_data[2]/100.0} Wh"
 puts "Real Power: #{energy_data[3]/100.0} h"
 puts "Apparent Power: #{energy_data[4]/100.0} VA"
-puts "Reactive Power: #{energy_data[5]/100.0} VAR"
+puts "Reactive Power: #{energy_data[5]/100.0} var"
 puts "Power Factor: #{energy_data[6]/1000.0}"
 puts "Frequency: #{energy_data[7]/100.0} Hz"
 

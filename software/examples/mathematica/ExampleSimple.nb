@@ -28,7 +28,7 @@ Notebook[{
    RowBox[{"Print", "[", RowBox[{"\"\<Energy: \>\"", "<>", RowBox[{"ToString", "[", RowBox[{"N", "[", RowBox[{"Quantity", "[", RowBox[{"energy", ",", "\"\<Wh/100\>\""}], "]"}], "]"}], "]"}]}], "]"}],
    RowBox[{"Print", "[", RowBox[{"\"\<Real Power: \>\"", "<>", RowBox[{"ToString", "[", RowBox[{"N", "[", RowBox[{"Quantity", "[", RowBox[{"realPower", ",", "\"\<h/100\>\""}], "]"}], "]"}], "]"}]}], "]"}],
    RowBox[{"Print", "[", RowBox[{"\"\<Apparent Power: \>\"", "<>", RowBox[{"ToString", "[", RowBox[{"N", "[", RowBox[{"Quantity", "[", RowBox[{"apparentPower", ",", "\"\<VA/100\>\""}], "]"}], "]"}], "]"}]}], "]"}],
-   RowBox[{"Print", "[", RowBox[{"\"\<Reactive Power: \>\"", "<>", RowBox[{"ToString", "[", RowBox[{"N", "[", RowBox[{"Quantity", "[", RowBox[{"reactivePower", ",", "\"\<VAR/100\>\""}], "]"}], "]"}], "]"}]}], "]"}],
+   RowBox[{"Print", "[", RowBox[{"\"\<Reactive Power: \>\"", "<>", RowBox[{"ToString", "[", RowBox[{"N", "[", RowBox[{"Quantity", "[", RowBox[{"reactivePower", ",", "\"\<var/100\>\""}], "]"}], "]"}], "]"}]}], "]"}],
    RowBox[{"Print", "[", RowBox[{"\"\<Power Factor: \>\"", "<>", RowBox[{"ToString", "[", RowBox[{"N", "[", RowBox[{"powerFactor", "/", "1000.0"}], "]"}], "]"}]}], "]"}],
    RowBox[{"Print", "[", RowBox[{"\"\<Frequency: \>\"", "<>", RowBox[{"ToString", "[", RowBox[{"N", "[", RowBox[{"Quantity", "[", RowBox[{"frequency", ",", "\"\<Hz/100\>\""}], "]"}], "]"}], "]"}]}], "]"}],
    RowBox[{"

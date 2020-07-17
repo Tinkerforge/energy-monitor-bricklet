@@ -27,7 +27,7 @@ class Example
 		Console.WriteLine("Energy: " + energy/100.0 + " Wh");
 		Console.WriteLine("Real Power: " + realPower/100.0 + " h");
 		Console.WriteLine("Apparent Power: " + apparentPower/100.0 + " VA");
-		Console.WriteLine("Reactive Power: " + reactivePower/100.0 + " VAR");
+		Console.WriteLine("Reactive Power: " + reactivePower/100.0 + " var");
 		Console.WriteLine("Power Factor: " + powerFactor/1000.0);
 		Console.WriteLine("Frequency: " + frequency/100.0 + " Hz");
 

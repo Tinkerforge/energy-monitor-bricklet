@@ -19,7 +19,7 @@ function cb_energyData($voltage, $current, $energy, $real_power, $apparent_power
     echo "Energy: " . $energy/100.0 . " Wh\n";
     echo "Real Power: " . $real_power/100.0 . " h\n";
     echo "Apparent Power: " . $apparent_power/100.0 . " VA\n";
-    echo "Reactive Power: " . $reactive_power/100.0 . " VAR\n";
+    echo "Reactive Power: " . $reactive_power/100.0 . " var\n";
     echo "Power Factor: " . $power_factor/1000.0 . "\n";
     echo "Frequency: " . $frequency/100.0 . " Hz\n";
     echo "\n";

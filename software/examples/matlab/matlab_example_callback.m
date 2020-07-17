@@ -29,7 +29,7 @@ function cb_energy_data(e)
     fprintf('Energy: %g Wh\n', e.energy/100.0);
     fprintf('Real Power: %g h\n', e.realPower/100.0);
     fprintf('Apparent Power: %g VA\n', e.apparentPower/100.0);
-    fprintf('Reactive Power: %g VAR\n', e.reactivePower/100.0);
+    fprintf('Reactive Power: %g var\n', e.reactivePower/100.0);
     fprintf('Power Factor: %g\n', e.powerFactor/1000.0);
     fprintf('Frequency: %g Hz\n', e.frequency/100.0);
     fprintf('\n');

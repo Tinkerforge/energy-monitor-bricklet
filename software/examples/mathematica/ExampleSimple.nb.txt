@@ -19,7 +19,7 @@ Print["Current: "<>ToString[N[Quantity[current,"A/100"]]]]
 Print["Energy: "<>ToString[N[Quantity[energy,"Wh/100"]]]]
 Print["Real Power: "<>ToString[N[Quantity[realPower,"h/100"]]]]
 Print["Apparent Power: "<>ToString[N[Quantity[apparentPower,"VA/100"]]]]
-Print["Reactive Power: "<>ToString[N[Quantity[reactivePower,"VAR/100"]]]]
+Print["Reactive Power: "<>ToString[N[Quantity[reactivePower,"var/100"]]]]
 Print["Power Factor: "<>ToString[N[powerFactor/1000.0]]]
 Print["Frequency: "<>ToString[N[Quantity[frequency,"Hz/100"]]]]
 

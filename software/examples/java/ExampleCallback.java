@@ -27,7 +27,7 @@ public class ExampleCallback {
 				System.out.println("Energy: " + energy/100.0 + " Wh");
 				System.out.println("Real Power: " + realPower/100.0 + " h");
 				System.out.println("Apparent Power: " + apparentPower/100.0 + " VA");
-				System.out.println("Reactive Power: " + reactivePower/100.0 + " VAR");
+				System.out.println("Reactive Power: " + reactivePower/100.0 + " var");
 				System.out.println("Power Factor: " + powerFactor/1000.0);
 				System.out.println("Frequency: " + frequency/100.0 + " Hz");
 				System.out.println("");

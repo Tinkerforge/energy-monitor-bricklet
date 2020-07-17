@@ -18,7 +18,7 @@ void cb_energy_data(int32_t voltage, int32_t current, int32_t energy, int32_t re
 	printf("Energy: %f Wh\n", energy/100.0);
 	printf("Real Power: %f h\n", real_power/100.0);
 	printf("Apparent Power: %f VA\n", apparent_power/100.0);
-	printf("Reactive Power: %f VAR\n", reactive_power/100.0);
+	printf("Reactive Power: %f var\n", reactive_power/100.0);
 	printf("Power Factor: %f\n", power_factor/1000.0);
 	printf("Frequency: %f Hz\n", frequency/100.0);
 	printf("\n");

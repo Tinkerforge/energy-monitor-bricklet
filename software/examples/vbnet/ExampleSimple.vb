@@ -25,7 +25,7 @@ Module ExampleSimple
         Console.WriteLine("Energy: " + (energy/100.0).ToString() + " Wh")
         Console.WriteLine("Real Power: " + (realPower/100.0).ToString() + " h")
         Console.WriteLine("Apparent Power: " + (apparentPower/100.0).ToString() + " VA")
-        Console.WriteLine("Reactive Power: " + (reactivePower/100.0).ToString() + " VAR")
+        Console.WriteLine("Reactive Power: " + (reactivePower/100.0).ToString() + " var")
         Console.WriteLine("Power Factor: " + (powerFactor/1000.0).ToString())
         Console.WriteLine("Frequency: " + (frequency/100.0).ToString() + " Hz")
 

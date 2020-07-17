@@ -26,7 +26,7 @@ public class ExampleSimple {
 		System.out.println("Energy: " + energyData.energy/100.0 + " Wh");
 		System.out.println("Real Power: " + energyData.realPower/100.0 + " h");
 		System.out.println("Apparent Power: " + energyData.apparentPower/100.0 + " VA");
-		System.out.println("Reactive Power: " + energyData.reactivePower/100.0 + " VAR");
+		System.out.println("Reactive Power: " + energyData.reactivePower/100.0 + " var");
 		System.out.println("Power Factor: " + energyData.powerFactor/1000.0);
 		System.out.println("Frequency: " + energyData.frequency/100.0 + " Hz");
 

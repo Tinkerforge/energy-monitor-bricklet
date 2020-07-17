@@ -28,7 +28,7 @@ em.register_callback(BrickletEnergyMonitor::CALLBACK_ENERGY_DATA) do |voltage, c
   puts "Energy: #{energy/100.0} Wh"
   puts "Real Power: #{real_power/100.0} h"
   puts "Apparent Power: #{apparent_power/100.0} VA"
-  puts "Reactive Power: #{reactive_power/100.0} VAR"
+  puts "Reactive Power: #{reactive_power/100.0} var"
   puts "Power Factor: #{power_factor/1000.0}"
   puts "Frequency: #{frequency/100.0} Hz"
   puts ''

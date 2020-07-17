@@ -16,7 +16,7 @@ def cb_energy_data(voltage, current, energy, real_power, apparent_power, reactiv
     print("Energy: " + str(energy/100.0) + " Wh")
     print("Real Power: " + str(real_power/100.0) + " h")
     print("Apparent Power: " + str(apparent_power/100.0) + " VA")
-    print("Reactive Power: " + str(reactive_power/100.0) + " VAR")
+    print("Reactive Power: " + str(reactive_power/100.0) + " var")
     print("Power Factor: " + str(power_factor/1000.0))
     print("Frequency: " + str(frequency/100.0) + " Hz")
     print("")

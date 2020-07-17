@@ -40,7 +40,7 @@ begin
   WriteLn(Format('Energy: %f Wh', [energy/100.0]));
   WriteLn(Format('Real Power: %f h', [realPower/100.0]));
   WriteLn(Format('Apparent Power: %f VA', [apparentPower/100.0]));
-  WriteLn(Format('Reactive Power: %f VAR', [reactivePower/100.0]));
+  WriteLn(Format('Reactive Power: %f var', [reactivePower/100.0]));
   WriteLn(Format('Power Factor: %f', [powerFactor/1000.0]));
   WriteLn(Format('Frequency: %f Hz', [frequency/100.0]));
   WriteLn('');

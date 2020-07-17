@@ -26,7 +26,7 @@ func main() {
 	fmt.Printf("Energy: %f Wh\n", float64(energy)/100.0)
 	fmt.Printf("Real Power: %f h\n", float64(realPower)/100.0)
 	fmt.Printf("Apparent Power: %f VA\n", float64(apparentPower)/100.0)
-	fmt.Printf("Reactive Power: %f VAR\n", float64(reactivePower)/100.0)
+	fmt.Printf("Reactive Power: %f var\n", float64(reactivePower)/100.0)
 	fmt.Printf("Power Factor: %f\n", float64(powerFactor)/1000.0)
 	fmt.Printf("Frequency: %f Hz\n", float64(frequency)/100.0)
 

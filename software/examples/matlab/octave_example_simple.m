@@ -19,7 +19,7 @@ function octave_example_simple()
     fprintf("Energy: %g Wh\n", energyData.energy/100.0);
     fprintf("Real Power: %g h\n", energyData.realPower/100.0);
     fprintf("Apparent Power: %g VA\n", energyData.apparentPower/100.0);
-    fprintf("Reactive Power: %g VAR\n", energyData.reactivePower/100.0);
+    fprintf("Reactive Power: %g var\n", energyData.reactivePower/100.0);
     fprintf("Power Factor: %g\n", energyData.powerFactor/1000.0);
     fprintf("Frequency: %g Hz\n", energyData.frequency/100.0);
 
