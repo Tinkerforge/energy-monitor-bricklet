@@ -1,13 +1,9 @@
-
-
 #include "bindings/hal_common.h"
 #include "bindings/bricklet_energy_monitor.h"
 
 #define UID "XYZ" // Change XYZ to the UID of your Energy Monitor Bricklet
 
 void check(int rc, const char* msg);
-
-
 
 // Callback function for Energy Data callback
 void energy_data_handler(TF_EnergyMonitor *device, int32_t voltage, int32_t current,
@@ -26,7 +22,6 @@ void energy_data_handler(TF_EnergyMonitor *device, int32_t voltage, int32_t curr
 	tf_hal_printf("Frequency: %d 1/%d Hz\n", frequency, 100.0);
 	tf_hal_printf("\n");
 }
-
 
 TF_EnergyMonitor em;
 
