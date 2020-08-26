@@ -29,15 +29,13 @@ void example_setup(TF_HalContext *hal) {
 	// Create device object
 	check(tf_energy_monitor_create(&em, UID, hal), "create device object");
 
-
 	// Register Energy Data callback to function energy_data_handler
 	tf_energy_monitor_register_energy_data_callback(&em,
-	                                               energy_data_handler,
-	                                               NULL);
+	                                                energy_data_handler,
+	                                                NULL);
 
 	// Set period for Energy Data callback to 1s (1000ms)
 	tf_energy_monitor_set_energy_data_callback_configuration(&em, 1000, false);
-
 }
 
 void example_loop(TF_HalContext *hal) {
