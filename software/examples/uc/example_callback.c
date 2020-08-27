@@ -5,11 +5,16 @@
 
 void check(int rc, const char* msg);
 
+void example_setup(TF_HalContext *hal);
+void example_loop(TF_HalContext *hal);
+
+
 // Callback function for Energy Data callback
-void energy_data_handler(TF_EnergyMonitor *device, int32_t voltage, int32_t current,
-                         int32_t energy, int32_t real_power, int32_t apparent_power,
-                         int32_t reactive_power, uint16_t power_factor,
-                         uint16_t frequency, void *user_data) {
+static void energy_data_handler(TF_EnergyMonitor *device, int32_t voltage,
+                                int32_t current, int32_t energy, int32_t real_power,
+                                int32_t apparent_power, int32_t reactive_power,
+                                uint16_t power_factor, uint16_t frequency,
+                                void *user_data) {
 	(void)device; (void)user_data; // avoid unused parameter warning
 
 	tf_hal_printf("Voltage: %d 1/%d V\n", voltage, 100.0);
@@ -23,7 +28,7 @@ void energy_data_handler(TF_EnergyMonitor *device, int32_t voltage, int32_t curr
 	tf_hal_printf("\n");
 }
 
-TF_EnergyMonitor em;
+static TF_EnergyMonitor em;
 
 void example_setup(TF_HalContext *hal) {
 	// Create device object
