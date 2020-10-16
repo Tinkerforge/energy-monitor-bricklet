@@ -27,14 +27,14 @@ void example_setup(TF_HalContext *hal) {
 	                                        &power_factor,
 	                                        &frequency), "get Energy Data");
 
-	tf_hal_printf("Voltage: %d 1/%d V\n", voltage, 100.0);
-	tf_hal_printf("Current: %d 1/%d A\n", current, 100.0);
-	tf_hal_printf("Energy: %d 1/%d Wh\n", energy, 100.0);
-	tf_hal_printf("Real Power: %d 1/%d h\n", real_power, 100.0);
-	tf_hal_printf("Apparent Power: %d 1/%d VA\n", apparent_power, 100.0);
-	tf_hal_printf("Reactive Power: %d 1/%d var\n", reactive_power, 100.0);
-	tf_hal_printf("Power Factor: %d 1/%d\n", power_factor, 1000.0);
-	tf_hal_printf("Frequency: %d 1/%d Hz\n", frequency, 100.0);
+	tf_hal_printf("Voltage: %d 1/%d V\n", voltage, 100);
+	tf_hal_printf("Current: %d 1/%d A\n", current, 100);
+	tf_hal_printf("Energy: %d 1/%d Wh\n", energy, 100);
+	tf_hal_printf("Real Power: %d 1/%d h\n", real_power, 100);
+	tf_hal_printf("Apparent Power: %d 1/%d VA\n", apparent_power, 100);
+	tf_hal_printf("Reactive Power: %d 1/%d var\n", reactive_power, 100);
+	tf_hal_printf("Power Factor: %d 1/%d\n", power_factor, 1000);
+	tf_hal_printf("Frequency: %d 1/%d Hz\n", frequency, 100);
 }
 
 void example_loop(TF_HalContext *hal) {
