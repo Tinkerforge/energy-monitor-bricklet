@@ -23,13 +23,13 @@ int main(void) {
 	}
 	// Don't use device before ipcon is connected
 
-	// Get current Energy Data
+	// Get current energy data
 	int32_t voltage, current, energy, real_power, apparent_power, reactive_power;
 	uint16_t power_factor, frequency;
 	if(energy_monitor_get_energy_data(&em, &voltage, &current, &energy, &real_power,
 	                                  &apparent_power, &reactive_power, &power_factor,
 	                                  &frequency) < 0) {
-		fprintf(stderr, "Could not get Energy Data, probably timeout\n");
+		fprintf(stderr, "Could not get energy data, probably timeout\n");
 		return 1;
 	}
 

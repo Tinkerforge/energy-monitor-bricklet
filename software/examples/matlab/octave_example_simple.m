@@ -11,7 +11,7 @@ function octave_example_simple()
     ipcon.connect(HOST, PORT); % Connect to brickd
     % Don't use device before ipcon is connected
 
-    % Get current Energy Data
+    % Get current energy data
     energyData = em.getEnergyData();
 
     fprintf("Voltage: %g V\n", energyData.voltage/100.0);

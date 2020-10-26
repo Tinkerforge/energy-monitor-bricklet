@@ -18,7 +18,7 @@ func main() {
 	defer ipcon.Disconnect()
 	// Don't use device before ipcon is connected.
 
-	// Get current Energy Data.
+	// Get current energy data.
 	voltage, current, energy, realPower, apparentPower, reactivePower, powerFactor, frequency, _ := em.GetEnergyData()
 
 	fmt.Printf("Voltage: %f V\n", float64(voltage)/100.0)

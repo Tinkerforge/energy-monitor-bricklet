@@ -13,7 +13,7 @@ Module ExampleSimple
         ipcon.Connect(HOST, PORT) ' Connect to brickd
         ' Don't use device before ipcon is connected
 
-        ' Get current Energy Data
+        ' Get current energy data
         Dim voltage, current, energy, realPower, apparentPower, reactivePower,
             powerFactor, frequency As Integer
 

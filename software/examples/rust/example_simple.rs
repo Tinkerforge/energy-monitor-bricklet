@@ -13,7 +13,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     ipcon.connect((HOST, PORT)).recv()??; // Connect to brickd.
                                           // Don't use device before ipcon is connected.
 
-    // Get current Energy Data.
+    // Get current energy data.
     let energy_data = em.get_energy_data().recv()?;
 
     println!("Voltage: {} V", energy_data.voltage as f32 / 100.0);

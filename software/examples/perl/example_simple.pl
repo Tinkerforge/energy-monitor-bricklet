@@ -14,7 +14,7 @@ my $em = Tinkerforge::BrickletEnergyMonitor->new(&UID, $ipcon); # Create device 
 $ipcon->connect(&HOST, &PORT); # Connect to brickd
 # Don't use device before ipcon is connected
 
-# Get current Energy Data
+# Get current energy data
 my ($voltage, $current, $energy, $real_power, $apparent_power, $reactive_power,
     $power_factor, $frequency) = $em->get_energy_data();
 

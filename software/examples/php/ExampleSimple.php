@@ -16,7 +16,7 @@ $em = new BrickletEnergyMonitor(UID, $ipcon); // Create device object
 $ipcon->connect(HOST, PORT); // Connect to brickd
 // Don't use device before ipcon is connected
 
-// Get current Energy Data
+// Get current energy data
 $energy_data = $em->getEnergyData();
 
 echo "Voltage: " . $energy_data['voltage']/100.0 . " V\n";

@@ -10,7 +10,7 @@ ipcon=NETNew["Tinkerforge.IPConnection"]
 em=NETNew["Tinkerforge.BrickletEnergyMonitor",uid,ipcon]
 ipcon@Connect[host,port]
 
-(*Get current Energy Data*)
+(*Get current energy data*)
 voltage=0;current=0;energy=0;realPower=0;apparentPower=0;reactivePower=0;powerFactor=0;frequency=0
 em@GetEnergyData[voltage,current,energy,realPower,apparentPower,reactivePower,powerFactor,frequency]
 

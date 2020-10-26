@@ -13,7 +13,7 @@ void example_setup(TF_HalContext *hal);
 void example_loop(TF_HalContext *hal);
 
 
-// Callback function for Energy Data callback
+// Callback function for energy data callback
 static void energy_data_handler(TF_EnergyMonitor *device, int32_t voltage,
                                 int32_t current, int32_t energy, int32_t real_power,
                                 int32_t apparent_power, int32_t reactive_power,
@@ -38,12 +38,12 @@ void example_setup(TF_HalContext *hal) {
 	// Create device object
 	check(tf_energy_monitor_create(&em, UID, hal), "create device object");
 
-	// Register Energy Data callback to function energy_data_handler
+	// Register energy data callback to function energy_data_handler
 	tf_energy_monitor_register_energy_data_callback(&em,
 	                                                energy_data_handler,
 	                                                NULL);
 
-	// Set period for Energy Data callback to 1s (1000ms)
+	// Set period for energy data callback to 1s (1000ms)
 	tf_energy_monitor_set_energy_data_callback_configuration(&em, 1000, false);
 }
 

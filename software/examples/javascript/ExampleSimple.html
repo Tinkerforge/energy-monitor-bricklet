@@ -41,7 +41,7 @@
 
                 ipcon.on(Tinkerforge.IPConnection.CALLBACK_CONNECTED,
                     function (connectReason) {
-                        // Get current Energy Data
+                        // Get current energy data
                         em.getEnergyData(
                             function (voltage, current, energy, realPower, apparentPower, reactivePower, powerFactor, frequency) {
                                 textArea.value += 'Voltage: ' + voltage/100.0 + ' V\n';

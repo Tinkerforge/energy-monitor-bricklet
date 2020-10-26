@@ -10,7 +10,7 @@ const HOST = 'localhost';
 const PORT = 4223;
 const UID = 'XYZ'; // Change XYZ to the UID of your Energy Monitor Bricklet
 
-// Callback function for Energy Data callback
+// Callback function for energy data callback
 function cb_energyData($voltage, $current, $energy, $real_power, $apparent_power,
                        $reactive_power, $power_factor, $frequency)
 {
@@ -31,10 +31,10 @@ $em = new BrickletEnergyMonitor(UID, $ipcon); // Create device object
 $ipcon->connect(HOST, PORT); // Connect to brickd
 // Don't use device before ipcon is connected
 
-// Register Energy Data callback to function cb_energyData
+// Register energy data callback to function cb_energyData
 $em->registerCallback(BrickletEnergyMonitor::CALLBACK_ENERGY_DATA, 'cb_energyData');
 
-// Set period for Energy Data callback to 1s (1000ms)
+// Set period for energy data callback to 1s (1000ms)
 $em->setEnergyDataCallbackConfiguration(1000, FALSE);
 
 echo "Press ctrl+c to exit\n";

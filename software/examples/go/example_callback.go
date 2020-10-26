@@ -30,7 +30,7 @@ func main() {
 		fmt.Println()
 	})
 
-	// Set period for Energy Data callback to 1s (1000ms).
+	// Set period for energy data callback to 1s (1000ms).
 	em.SetEnergyDataCallbackConfiguration(1000, false)
 
 	fmt.Print("Press enter to exit.")

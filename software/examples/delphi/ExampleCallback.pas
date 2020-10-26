@@ -28,7 +28,7 @@ const
 var
   e: TExample;
 
-{ Callback procedure for Energy Data callback }
+{ Callback procedure for energy data callback }
 procedure TExample.EnergyDataCB(sender: TBrickletEnergyMonitor; const voltage: longint;
                                 const current: longint; const energy: longint;
                                 const realPower: longint; const apparentPower: longint;
@@ -58,10 +58,10 @@ begin
   ipcon.Connect(HOST, PORT);
   { Don't use device before ipcon is connected }
 
-  { Register Energy Data callback to procedure EnergyDataCB }
+  { Register energy data callback to procedure EnergyDataCB }
   em.OnEnergyData := {$ifdef FPC}@{$endif}EnergyDataCB;
 
-  { Set period for Energy Data callback to 1s (1000ms) }
+  { Set period for energy data callback to 1s (1000ms) }
   em.SetEnergyDataCallbackConfiguration(1000, false);
 
   WriteLn('Press key to exit');

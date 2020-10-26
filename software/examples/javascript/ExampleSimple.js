@@ -16,7 +16,7 @@ ipcon.connect(HOST, PORT,
 
 ipcon.on(Tinkerforge.IPConnection.CALLBACK_CONNECTED,
     function (connectReason) {
-        // Get current Energy Data
+        // Get current energy data
         em.getEnergyData(
             function (voltage, current, energy, realPower, apparentPower, reactivePower, powerFactor, frequency) {
                 console.log('Voltage: ' + voltage/100.0 + ' V');

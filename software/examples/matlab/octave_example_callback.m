@@ -11,17 +11,17 @@ function octave_example_callback()
     ipcon.connect(HOST, PORT); % Connect to brickd
     % Don't use device before ipcon is connected
 
-    % Register Energy Data callback to function cb_energy_data
+    % Register energy data callback to function cb_energy_data
     em.addEnergyDataCallback(@cb_energy_data);
 
-    % Set period for Energy Data callback to 1s (1000ms)
+    % Set period for energy data callback to 1s (1000ms)
     em.setEnergyDataCallbackConfiguration(1000, false);
 
     input("Press key to exit\n", "s");
     ipcon.disconnect();
 end
 
-% Callback function for Energy Data callback
+% Callback function for energy data callback
 function cb_energy_data(e)
     fprintf("Voltage: %g V\n", e.voltage/100.0);
     fprintf("Current: %g A\n", e.current/100.0);

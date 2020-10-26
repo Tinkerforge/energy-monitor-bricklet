@@ -8,7 +8,7 @@ UID = "XYZ" # Change XYZ to the UID of your Energy Monitor Bricklet
 from tinkerforge.ip_connection import IPConnection
 from tinkerforge.bricklet_energy_monitor import BrickletEnergyMonitor
 
-# Callback function for Energy Data callback
+# Callback function for energy data callback
 def cb_energy_data(voltage, current, energy, real_power, apparent_power, reactive_power,
                    power_factor, frequency):
     print("Voltage: " + str(voltage/100.0) + " V")
@@ -28,10 +28,10 @@ if __name__ == "__main__":
     ipcon.connect(HOST, PORT) # Connect to brickd
     # Don't use device before ipcon is connected
 
-    # Register Energy Data callback to function cb_energy_data
+    # Register energy data callback to function cb_energy_data
     em.register_callback(em.CALLBACK_ENERGY_DATA, cb_energy_data)
 
-    # Set period for Energy Data callback to 1s (1000ms)
+    # Set period for energy data callback to 1s (1000ms)
     em.set_energy_data_callback_configuration(1000, False)
 
     input("Press key to exit\n") # Use raw_input() in Python 2

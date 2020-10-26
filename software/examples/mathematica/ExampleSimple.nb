@@ -18,7 +18,7 @@ Notebook[{
    RowBox[{"ipcon", "@", RowBox[{"Connect", "[", RowBox[{"host", ",", "port"}], "]"}]}],
    RowBox[{"
 "}],
-   RowBox[{"(*", "Get current Energy Data", "*)"}],
+   RowBox[{"(*", "Get current energy data", "*)"}],
    RowBox[{"voltage", "=", "0", ";", "current", "=", "0", ";", "energy", "=", "0", ";", "realPower", "=", "0", ";", "apparentPower", "=", "0", ";", "reactivePower", "=", "0", ";", "powerFactor", "=", "0", ";", "frequency", "=", "0"}],
    RowBox[{"em", "@", RowBox[{"GetEnergyData", "[", RowBox[{"voltage", ",", "current", ",", "energy", ",", "realPower", ",", "apparentPower", ",", "reactivePower", ",", "powerFactor", ",", "frequency"}], "]"}]}],
    RowBox[{"

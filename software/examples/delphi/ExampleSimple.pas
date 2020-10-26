@@ -37,7 +37,7 @@ begin
   ipcon.Connect(HOST, PORT);
   { Don't use device before ipcon is connected }
 
-  { Get current Energy Data }
+  { Get current energy data }
   em.GetEnergyData(voltage, current, energy, realPower, apparentPower, reactivePower,
                    powerFactor, frequency);
 

@@ -17,7 +17,7 @@ public class ExampleCallback {
 		ipcon.connect(HOST, PORT); // Connect to brickd
 		// Don't use device before ipcon is connected
 
-		// Add Energy Data listener
+		// Add energy data listener
 		em.addEnergyDataListener(new BrickletEnergyMonitor.EnergyDataListener() {
 			public void energyData(int voltage, int current, int energy, int realPower,
 			                       int apparentPower, int reactivePower, int powerFactor,
@@ -34,7 +34,7 @@ public class ExampleCallback {
 			}
 		});
 
-		// Set period for Energy Data callback to 1s (1000ms)
+		// Set period for energy data callback to 1s (1000ms)
 		em.setEnergyDataCallbackConfiguration(1000, false);
 
 		System.out.println("Press key to exit"); System.in.read();

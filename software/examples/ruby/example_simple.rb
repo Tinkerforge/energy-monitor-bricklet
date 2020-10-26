@@ -16,7 +16,7 @@ em = BrickletEnergyMonitor.new UID, ipcon # Create device object
 ipcon.connect HOST, PORT # Connect to brickd
 # Don't use device before ipcon is connected
 
-# Get current Energy Data as [voltage, current, energy, real_power, apparent_power,
+# Get current energy data as [voltage, current, energy, real_power, apparent_power,
 #                             reactive_power, power_factor, frequency]
 energy_data = em.get_energy_data
 

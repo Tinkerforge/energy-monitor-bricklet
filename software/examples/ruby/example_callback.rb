@@ -16,7 +16,7 @@ em = BrickletEnergyMonitor.new UID, ipcon # Create device object
 ipcon.connect HOST, PORT # Connect to brickd
 # Don't use device before ipcon is connected
 
-# Register Energy Data callback
+# Register energy data callback
 em.register_callback(BrickletEnergyMonitor::CALLBACK_ENERGY_DATA) do |voltage, current,
                                                                       energy, real_power,
                                                                       apparent_power,
@@ -34,7 +34,7 @@ em.register_callback(BrickletEnergyMonitor::CALLBACK_ENERGY_DATA) do |voltage, c
   puts ''
 end
 
-# Set period for Energy Data callback to 1s (1000ms)
+# Set period for energy data callback to 1s (1000ms)
 em.set_energy_data_callback_configuration 1000, false
 
 puts 'Press key to exit'

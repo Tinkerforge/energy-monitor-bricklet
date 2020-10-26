@@ -7,7 +7,7 @@ class Example
 	private static int PORT = 4223;
 	private static string UID = "XYZ"; // Change XYZ to the UID of your Energy Monitor Bricklet
 
-	// Callback function for Energy Data callback
+	// Callback function for energy data callback
 	static void EnergyDataCB(BrickletEnergyMonitor sender, int voltage, int current,
 	                         int energy, int realPower, int apparentPower,
 	                         int reactivePower, int powerFactor, int frequency)
@@ -31,10 +31,10 @@ class Example
 		ipcon.Connect(HOST, PORT); // Connect to brickd
 		// Don't use device before ipcon is connected
 
-		// Register Energy Data callback to function EnergyDataCB
+		// Register energy data callback to function EnergyDataCB
 		em.EnergyDataCallback += EnergyDataCB;
 
-		// Set period for Energy Data callback to 1s (1000ms)
+		// Set period for energy data callback to 1s (1000ms)
 		em.SetEnergyDataCallbackConfiguration(1000, false);
 
 		Console.WriteLine("Press enter to exit");

@@ -15,7 +15,7 @@ class Example
 		ipcon.Connect(HOST, PORT); // Connect to brickd
 		// Don't use device before ipcon is connected
 
-		// Get current Energy Data
+		// Get current energy data
 		int voltage, current, energy, realPower, apparentPower, reactivePower,
 		    powerFactor, frequency;
 		em.GetEnergyData(out voltage, out current, out energy, out realPower,

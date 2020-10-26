@@ -18,7 +18,7 @@ public class ExampleSimple {
 		ipcon.connect(HOST, PORT); // Connect to brickd
 		// Don't use device before ipcon is connected
 
-		// Get current Energy Data
+		// Get current energy data
 		EnergyData energyData = em.getEnergyData(); // Can throw com.tinkerforge.TimeoutException
 
 		System.out.println("Voltage: " + energyData.voltage/100.0 + " V");

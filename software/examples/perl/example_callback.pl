@@ -8,7 +8,7 @@ use constant HOST => 'localhost';
 use constant PORT => 4223;
 use constant UID => 'XYZ'; # Change XYZ to the UID of your Energy Monitor Bricklet
 
-# Callback subroutine for Energy Data callback
+# Callback subroutine for energy data callback
 sub cb_energy_data
 {
     my ($voltage, $current, $energy, $real_power, $apparent_power, $reactive_power,
@@ -31,10 +31,10 @@ my $em = Tinkerforge::BrickletEnergyMonitor->new(&UID, $ipcon); # Create device 
 $ipcon->connect(&HOST, &PORT); # Connect to brickd
 # Don't use device before ipcon is connected
 
-# Register Energy Data callback to subroutine cb_energy_data
+# Register energy data callback to subroutine cb_energy_data
 $em->register_callback($em->CALLBACK_ENERGY_DATA, 'cb_energy_data');
 
-# Set period for Energy Data callback to 1s (1000ms)
+# Set period for energy data callback to 1s (1000ms)
 $em->set_energy_data_callback_configuration(1000, 0);
 
 print "Press key to exit\n";

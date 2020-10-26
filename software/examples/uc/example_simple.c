@@ -19,13 +19,13 @@ void example_setup(TF_HalContext *hal) {
 	// Create device object
 	check(tf_energy_monitor_create(&em, UID, hal), "create device object");
 
-	// Get current Energy Data
+	// Get current energy data
 	int32_t voltage, current, energy, real_power, apparent_power, reactive_power;
 	uint16_t power_factor, frequency;
 	check(tf_energy_monitor_get_energy_data(&em, &voltage, &current, &energy, &real_power,
 	                                        &apparent_power, &reactive_power,
 	                                        &power_factor,
-	                                        &frequency), "get Energy Data");
+	                                        &frequency), "get energy data");
 
 	tf_hal_printf("Voltage: %d 1/%d V\n", voltage, 100);
 	tf_hal_printf("Current: %d 1/%d A\n", current, 100);

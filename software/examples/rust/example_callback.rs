@@ -31,7 +31,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
     });
 
-    // Set period for Energy Data callback to 1s (1000ms).
+    // Set period for energy data callback to 1s (1000ms).
     em.set_energy_data_callback_configuration(1000, false);
 
     println!("Press enter to exit.");

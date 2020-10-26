@@ -6,7 +6,7 @@ Module ExampleCallback
     Const PORT As Integer = 4223
     Const UID As String = "XYZ" ' Change XYZ to the UID of your Energy Monitor Bricklet
 
-    ' Callback subroutine for Energy Data callback
+    ' Callback subroutine for energy data callback
     Sub EnergyDataCB(ByVal sender As BrickletEnergyMonitor, ByVal voltage As Integer, _
                      ByVal current As Integer, ByVal energy As Integer, _
                      ByVal realPower As Integer, ByVal apparentPower As Integer, _
@@ -30,10 +30,10 @@ Module ExampleCallback
         ipcon.Connect(HOST, PORT) ' Connect to brickd
         ' Don't use device before ipcon is connected
 
-        ' Register Energy Data callback to subroutine EnergyDataCB
+        ' Register energy data callback to subroutine EnergyDataCB
         AddHandler em.EnergyDataCallback, AddressOf EnergyDataCB
 
-        ' Set period for Energy Data callback to 1s (1000ms)
+        ' Set period for energy data callback to 1s (1000ms)
         em.SetEnergyDataCallbackConfiguration(1000, False)
 
         Console.WriteLine("Press key to exit")

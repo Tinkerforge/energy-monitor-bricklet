@@ -10,7 +10,7 @@ ipcon=NETNew["Tinkerforge.IPConnection"]
 em=NETNew["Tinkerforge.BrickletEnergyMonitor",uid,ipcon]
 ipcon@Connect[host,port]
 
-(*Callback function for Energy Data callback*)
+(*Callback function for energy data callback*)
 EnergyDataCB[sender_,voltage_,current_,energy_,realPower_,apparentPower_,reactivePower_,
              powerFactor_,frequency_]:=
  Module[{},
@@ -26,7 +26,7 @@ EnergyDataCB[sender_,voltage_,current_,energy_,realPower_,apparentPower_,reactiv
 
 AddEventHandler[em@EnergyDataCallback,EnergyDataCB]
 
-(*Set period for Energy Data callback to 1s (1000ms)*)
+(*Set period for energy data callback to 1s (1000ms)*)
 em@SetEnergyDataCallbackConfiguration[1000,False]
 
 Input["Click OK to exit"]

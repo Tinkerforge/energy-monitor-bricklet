@@ -41,14 +41,14 @@
 
                 ipcon.on(Tinkerforge.IPConnection.CALLBACK_CONNECTED,
                     function (connectReason) {
-                        // Set period for Energy Data callback to 1s (1000ms)
+                        // Set period for energy data callback to 1s (1000ms)
                         em.setEnergyDataCallbackConfiguration(1000, false);
                     }
                 );
 
-                // Register Energy Data callback
+                // Register energy data callback
                 em.on(Tinkerforge.BrickletEnergyMonitor.CALLBACK_ENERGY_DATA,
-                    // Callback function for Energy Data callback
+                    // Callback function for energy data callback
                     function (voltage, current, energy, realPower, apparentPower, reactivePower,
                               powerFactor, frequency) {
                         textArea.value += 'Voltage: ' + voltage/100.0 + ' V\n';
