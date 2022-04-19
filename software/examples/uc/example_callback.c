@@ -9,8 +9,8 @@
 
 void check(int rc, const char* msg);
 
-void example_setup(TF_HalContext *hal);
-void example_loop(TF_HalContext *hal);
+void example_setup(TF_HAL *hal);
+void example_loop(TF_HAL *hal);
 
 
 // Callback function for energy data callback
@@ -34,7 +34,7 @@ static void energy_data_handler(TF_EnergyMonitor *device, int32_t voltage,
 
 static TF_EnergyMonitor em;
 
-void example_setup(TF_HalContext *hal) {
+void example_setup(TF_HAL *hal) {
 	// Create device object
 	check(tf_energy_monitor_create(&em, UID, hal), "create device object");
 
@@ -47,7 +47,7 @@ void example_setup(TF_HalContext *hal) {
 	tf_energy_monitor_set_energy_data_callback_configuration(&em, 1000, false);
 }
 
-void example_loop(TF_HalContext *hal) {
+void example_loop(TF_HAL *hal) {
 	// Poll for callbacks
 	tf_hal_callback_tick(hal, 0);
 }
