@@ -1,17 +1,13 @@
 // This example is not self-contained.
-// It requres usage of the example driver specific to your platform.
+// It requires usage of the example driver specific to your platform.
 // See the HAL documentation.
 
-#include "bindings/hal_common.h"
-#include "bindings/bricklet_energy_monitor.h"
+#include "src/bindings/hal_common.h"
+#include "src/bindings/bricklet_energy_monitor.h"
 
-#define UID "XYZ" // Change XYZ to the UID of your Energy Monitor Bricklet
-
-void check(int rc, const char* msg);
-
+void check(int rc, const char *msg);
 void example_setup(TF_HAL *hal);
 void example_loop(TF_HAL *hal);
-
 
 // Callback function for energy data callback
 static void energy_data_handler(TF_EnergyMonitor *device, int32_t voltage,
@@ -36,7 +32,7 @@ static TF_EnergyMonitor em;
 
 void example_setup(TF_HAL *hal) {
 	// Create device object
-	check(tf_energy_monitor_create(&em, UID, hal), "create device object");
+	check(tf_energy_monitor_create(&em, NULL, hal), "create device object");
 
 	// Register energy data callback to function energy_data_handler
 	tf_energy_monitor_register_energy_data_callback(&em,
