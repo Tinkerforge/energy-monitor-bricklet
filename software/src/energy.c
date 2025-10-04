@@ -19,6 +19,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
+// On some systems, math.h declares a function named logf(float) to calculate
+// the natural logarithm of a float number. bricklib2's logging.h defines
+// a macro called logf(...) to log fatal errors. The hack below renames the
+// unused logf from math.h to logf_math to avoid colliding with logf from
+// logging.h.
+#define logf logf_math
+#include <math.h>
+#undef logf
+
+
 #include "energy.h"
 
 #include "configs/config_energy.h"
@@ -26,8 +36,6 @@
 #include "bricklib2/bootloader/bootloader.h"
 #include "bricklib2/logging/logging.h"
 #include "bricklib2/utility/util_definitions.h"
-
-#include "math.h"
 
 #include "xmc_vadc.h"
 #include "xmc_scu.h"
@@ -50,7 +58,7 @@ uint32_t *const energy_samples_end   = energy.samples + ENERGY_SAMPLES_NUM - 1;
 uint32_t *energy_samples_start_cur   = energy.samples;
 uint32_t *energy_samples_end_cur     = energy.samples;
 
-// 1 sample per 71.85us 
+// 1 sample per 71.85us
 // Interrupt takes 0.874us (measured with logic analyzer)
 void __attribute__((optimize("-O3"))) __attribute__ ((section (".ram_code"))) energy_adc_irq_handler(void) {
 	const uint16_t v = XMC_VADC_GROUP_GetDetailedResult(ENERGY_V_ADC_GROUP, ENERGY_V_ADC_RESULT_REG);
@@ -73,7 +81,7 @@ void energy_write_offset_calibration(uint16_t a, uint16_t v) {
 	if(!bootloader_write_eeprom_page(ENERGY_OFFSET_CALIBRATION_PAGE, page)) {
 		// TODO: Error handling?
 	}
-	
+
 	logd("Write offset calibration values: a %d, v %d\n\r", a, v);
 }
 
@@ -87,7 +95,7 @@ void energy_read_offset_calibration(void) {
 	// This is either our first startup or something went wrong.
 	// We initialize the calibration data with sane default values.
 	if(page[ENERGY_CALIBRATION_MAGIC_POS] != ENERGY_CALIBRATION_MAGIC) {
-		energy.offset_current = 8167; 
+		energy.offset_current = 8167;
 		energy.offset_voltage = 7962;
 
 		energy_write_offset_calibration(energy.offset_current, energy.offset_voltage);
@@ -130,7 +138,7 @@ void energy_write_ratio_calibration(uint16_t a, uint16_t v) {
 	if(!bootloader_write_eeprom_page(ENERGY_RATIO_CALIBRATION_PAGE, page)) {
 		// TODO: Error handling?
 	}
-	
+
 	logd("Write ratio calibration values: a %d, v %d\n\r", a, v);
 }
 
@@ -415,7 +423,7 @@ void energy_tick(void) {
 	}
 
 	while(energy_samples_start_cur != energy_samples_end_cur) {
-		// Check if transformers are connected. 
+		// Check if transformers are connected.
 		// If a plug is disconnected we wait for it to be connected for at least two loops in a row
 		// to make sure that we don't have use the measured values during the plugging of the connector.
 		const bool new_voltage_transformer_connected = XMC_GPIO_GetInput(ENERGY_V_PLUG_PIN);
@@ -640,7 +648,7 @@ void energy_init_adc(void) {
 	NVIC_SetPriority(ENERGY_ADC_IRQ_NODE_ID, ENERGY_ADC_IRQ_PRIO);
 	NVIC_EnableIRQ(ENERGY_ADC_IRQ_NODE_ID);
 
-	// Load the queue/scan entries into the hardware 
+	// Load the queue/scan entries into the hardware
 	XMC_VADC_GROUP_ScanAddMultipleChannels(ENERGY_ADC_MASTER_GROUP, 1);
 
 	// Start the arbiter of the ADC request source after the initialization.
